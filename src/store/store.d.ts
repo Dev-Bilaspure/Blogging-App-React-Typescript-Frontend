@@ -195,6 +195,13 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
+      getPostsByTag: (tag: string) => Promise<{
+        success: boolean;
+        message: string;
+        posts?: any[];
+        error?: any;
+        errorType?: string;
+      }>;
       getPostById: (
         postId: string
       ) => Promise<{

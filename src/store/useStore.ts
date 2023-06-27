@@ -3,6 +3,7 @@ import { immer } from "zustand/middleware/immer";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { INTERNAL_SERVER_ERROR } from "@/utils/errorTypes";
+import { debug_mode } from "@/debug-controller";
 
 const ORIGIN = "http://localhost:8000";
 export const useStore = create<State, [["zustand/immer", never]]>(
@@ -19,7 +20,8 @@ export const useStore = create<State, [["zustand/immer", never]]>(
               "Authorization"
             ] = `Bearer ${storedToken}`;
             const response = await axios.get(`${ORIGIN}/api/auth/me`);
-
+            console.log({jjjjjjjjjjjjj: response.data});
+            
             if (response.data.success) {
               set((state) => {
                 state.data.authenticatedUser = response.data.user;
@@ -333,7 +335,14 @@ export const useStore = create<State, [["zustand/immer", never]]>(
           }
           return response.data;
         },
-
+        getPostsByTag: async (tag) => {
+          const response = await axios.get(`${ORIGIN}/api/posts/tag/${tag}`);
+          if (response.data.success) {
+            const { success, message, posts } = response.data;
+            return { success, message, posts };
+          }
+          return response.data;
+        },
         deletePost: async (postId) => {
           const storedToken = Cookies.get("token");
           if (storedToken) {
@@ -362,6 +371,8 @@ export const useStore = create<State, [["zustand/immer", never]]>(
             const { success, message, posts } = response.data;
             return { success, message, posts };
           }
+          if (debug_mode) console.log({ res: response });
+
           return response.data;
         },
         getPostById: async (postId) => {

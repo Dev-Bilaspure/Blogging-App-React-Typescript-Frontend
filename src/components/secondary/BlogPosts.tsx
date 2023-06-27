@@ -4,11 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 import sampleImage from "../../assets/images/sample-image.jpeg";
 import { twMerge } from "tailwind-merge";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
-const BlogPosts = (props) => {
+const BlogPosts = ({ posts, ...props }) => {
   const arr = [1, 2, 3, 4];
   return (
-    <div className={twMerge("flex flex-col space-y-[50px]", props.className)}>
-      {arr.map((item) => {
+    <div className={twMerge("flex flex-col space-y-[65px]", props.className)}>
+      {(posts.length ? posts : [1, 2, 3, 4]).map((item) => {
         return <BlogPost />;
       })}
     </div>
@@ -22,17 +22,17 @@ const BlogPost = (props) => {
   const navigate = useNavigate();
   return (
     <div className={twMerge("", props.className)}>
-      <div className="flex min-h-[186px] flex-row space-x-3 rounded-lg sm:space-x-2">
+      <div className="flex flex-row space-x-2">
+        <img
+          src={defaultUserPic}
+          className="h-[24px] cursor-pointer rounded-lg"
+        />
+        <p className="flex cursor-pointer flex-row items-center justify-center font-robotoSlab text-[15px] sm:text-[13px]">
+          Dev Bilaspure
+        </p>
+      </div>
+      <div className="flex min-h-[156px] flex-row space-x-10 rounded-lg sm:space-x-2">
         <div className="flex w-2/3 flex-col space-y-1 rounded-lg">
-          <div className="flex flex-row space-x-2">
-            <img
-              src={defaultUserPic}
-              className="h-[28px] cursor-pointer rounded-lg"
-            />
-            <p className="flex cursor-pointer flex-row items-center justify-center font-robotoSlab text-[15px] sm:text-[13px]">
-              Dev Bilaspure
-            </p>
-          </div>
           <div className="flex h-full flex-col space-y-3 rounded-lg">
             <div className="flex h-full flex-col space-y-3 rounded-lg">
               <p
@@ -97,7 +97,7 @@ const BlogPost = (props) => {
         <div className="w-1/3 rounded-r-lg object-cover">
           <img
             src={sampleImage}
-            className="h-full w-full cursor-pointer rounded-r-lg"
+            className="h-full w-full cursor-pointer rounded-lg"
             onClick={() => navigate("/blog/123")}
           />
         </div>
@@ -105,7 +105,7 @@ const BlogPost = (props) => {
       <div className="mt-1 flex flex-row flex-wrap space-x-4">
         {postTags.map((item) => {
           return (
-            <div className="mt-2 cursor-pointer rounded-full border border-[#E6E6E6] bg-[#E8E8E8] px-[8px] py-[1px] text-[12px] sm:text-[10px]" style={{boxShadow: '0px 0px 10px rgb(160, 160, 160)'}}>
+            <div className="mt-2 cursor-pointer rounded-full border border-[#E6E6E6] bg-[#E8E8E8] px-[8px] py-[1px] text-[12px] sm:text-[10px]">
               Stock Market
             </div>
           );

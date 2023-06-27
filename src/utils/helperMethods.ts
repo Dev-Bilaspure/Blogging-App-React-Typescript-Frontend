@@ -1,4 +1,9 @@
-import { getDownloadURL, ref, uploadBytes } from "@firebase/storage";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  deleteObject,
+} from "@firebase/storage";
 import { storage } from "@/utils/firebaseConfig";
 import { v4 as uuidv4 } from "uuid";
 import { debug_mode } from "@/debug-controller";
@@ -31,7 +36,21 @@ export const uploadImage = async ({
     }
     return { success: true, imageURL };
   } catch (error) {
-    console.log({ success: false, error });
+    debug_mode && console.log({ success: false, error });
+    return { success: false, error };
+  }
+};
+
+export const deleteImage = async (
+  imageURL: string
+): Promise<{ success: boolean; error?: any }> => {
+  try {
+    if (imageURL === "") return { success: false, error: "imageURL is empty" };
+    const storageRef = ref(storage, imageURL);
+    await deleteObject(storageRef);
+    return { success: true };
+  } catch (error) {
+    debug_mode && console.log({ success: false, error });
     return { success: false, error };
   }
 };

@@ -1,18 +1,18 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getStorage } from "firebase/storage";
-import { configDotenv } from "dotenv";
+// import dotenv from "dotenv";
 
-configDotenv();
+// dotenv.config();
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: process.env.FIREBASE_APP_API_KEY,
-  authDomain: process.env.FIREBASE_APP_AUTH_DOMAIN,
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  storageBucket: process.env.FIREBASE_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.FIREBASE_APP_MESSAGING_SENDER_ID,
-  appId: process.env.FIREBASE_APP_ID,
+  apiKey: "AIzaSyA0x3j7aGufMVvwz-6xYiRk9DPS5LzlDdI",
+  authDomain: "maadhyam-blogging-app.firebaseapp.com",
+  projectId: "maadhyam-blogging-app",
+  storageBucket: "maadhyam-blogging-app.appspot.com",
+  messagingSenderId: "636993503487",
+  appId: "1:636993503487:web:f996eb3fa32e674ac24cca",
 };
 
 // Initialize Firebase

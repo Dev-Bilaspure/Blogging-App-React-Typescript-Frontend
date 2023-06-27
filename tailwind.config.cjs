@@ -6,7 +6,7 @@ module.exports = {
       "2xl": { max: "1536px" },
       xl: { max: "1280px" },
       lg: { max: "1024px" },
-      md: { max: "768px" },
+      md: { max: "868px" },
       sm: { max: "640px" },
       xs: { max: "475px" },
     },
@@ -18,7 +18,8 @@ module.exports = {
         robotoSlab: ['Roboto Slab', 'serif'],
         lato: ['Lato', 'sans-serif'],
         arimo: ['Arimo', 'sans-serif'],
-        merriWeather: ['Merriweather', 'serif']
+        merriWeather: ['Merriweather', 'serif'],
+        outfit: ['Outfit', 'sans-serif'],
       },
       colors: {
         black: "#222222",
