@@ -24,24 +24,33 @@ const Navbar = () => {
             location.pathname === "/" ? "border-black" : "border-[#F2F2F2]"
           } bg-white sm:h-[40px]`}
         >
-          <div className="flex w-full justify-between px-5 sm:px-0">
+          <div className={`flex w-full justify-between px-10 sm:px-0`}>
             <BigLogo className={""} />
             <div className="flex flex-row items-center justify-center space-x-10 text-black sm:space-x-5">
-              <Link to="/tolinkedin" className="md:hidden">
+              <a
+                href="https://linkedin.com/in/dev-bilaspure"
+                target="_blank"
+                className="md:hidden"
+              >
                 <p className="">Contact us</p>
-              </Link>
-              <Link to="/write" className="">
-                <p className="">Write</p>
-              </Link>
+              </a>
+              {location.pathname !== "/write" && (
+                <Link to="/write" className="sm:hidden">
+                  <div className="flex space-x-1">
+                    <i className="fa-regular fa-pen-to-square flex items-center justify-center"></i>
+                    <p className="">Write</p>
+                  </div>
+                </Link>
+              )}
               {!authenticatedUser && (
                 <Link to="/login">
-                  <p className="sm:text-[15px]">Sign In</p>
+                  <p className="sm:text-[13px]">Sign In</p>
                 </Link>
               )}
               {!authenticatedUser && (
                 <button
                   onClick={() => navigate("/signup")}
-                  className="rounded-3xl bg-[rgb(31,31,31)] px-[20px] py-[7px] text-white shadow-none sm:px-[15px] sm:text-[13px]"
+                  className="rounded-3xl bg-[rgb(31,31,31)] px-[20px] py-[7px] text-white shadow-none sm:px-[11px] sm:py-[6px] sm:text-[11px]"
                 >
                   Get Started
                 </button>

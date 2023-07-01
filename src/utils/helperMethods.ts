@@ -54,3 +54,4 @@ export const deleteImage = async (
     return { success: false, error };
   }
 };
+

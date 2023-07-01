@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import sampleImage from "../../assets/images/sample-image.jpeg";
 import { twMerge } from "tailwind-merge";
 import ThumbUpOffAltIcon from "@mui/icons-material/ThumbUpOffAlt";
+import _ from "lodash";
+
 const BlogPosts = ({ posts, ...props }) => {
   const arr = [1, 2, 3, 4];
   return (
@@ -20,9 +22,10 @@ const BlogPost = (props) => {
   const isLiked = !true;
   const isBookmarked = true;
   const navigate = useNavigate();
+  const tag = "stock market";
   return (
     <div className={twMerge("", props.className)}>
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row space-x-2 mb-[2px]">
         <img
           src={defaultUserPic}
           className="h-[24px] cursor-pointer rounded-lg"
@@ -105,9 +108,11 @@ const BlogPost = (props) => {
       <div className="mt-1 flex flex-row flex-wrap space-x-4">
         {postTags.map((item) => {
           return (
-            <div className="mt-2 cursor-pointer rounded-full border border-[#E6E6E6] bg-[#E8E8E8] px-[8px] py-[1px] text-[12px] sm:text-[10px]">
-              Stock Market
-            </div>
+            <Link to={`/tag/${_.capitalize(tag)}`}>
+              <div className="mt-2 cursor-pointer rounded-full border border-[#E6E6E6] bg-[#E8E8E8] px-[8px] py-[1px] text-[12px] hover:shadow-lg focus:shadow-sm sm:text-[10px]">
+                Stock Market
+              </div>
+            </Link>
           );
         })}
       </div>

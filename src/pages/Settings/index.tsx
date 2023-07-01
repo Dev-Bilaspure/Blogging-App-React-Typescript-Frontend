@@ -16,6 +16,7 @@ const Settings = () => {
   console.log({ authenticatedUser });
   
   return (
+    !authenticatedUser ? <Navigate to="/login" /> : 
     <div className="flex w-full justify-center pt-5 sm:px-5 pb-20">
       <div className=" mt-10 w-1/2 overflow-x-hidden md:w-3/4 sm:mt-5 sm:w-full">
         <div className="mb-10 flex w-full space-x-4 border-b border-[#E6E6E6] pb-2 sm:space-x-2 sm:pb-1">

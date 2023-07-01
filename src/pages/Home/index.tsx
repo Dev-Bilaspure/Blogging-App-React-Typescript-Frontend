@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import TagsTabs from "../../components/secondary/TagsTabs";
 import { useStore } from "@/store/useStore";
 import { debug_mode } from "@/debug-controller";
+import SimpleIconZoom from "@/components/primary/SimpleIconZoom";
 
 const Home = (props) => {
   const {data: {authenticatedUser}, actions: {post: {getAllPosts}}} = useStore();

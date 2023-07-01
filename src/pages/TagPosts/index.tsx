@@ -42,8 +42,8 @@ const TagPosts = () => {
 
   return (
     <div className={`flex  w-full flex-row sm:flex-col`}>
-      <div className=" w-2/3 sm:w-full px-20 md:px-10 py-10 sm:px-5  ">
-        <div className="flex h-fit space-x-3 border-b border-[#E6E6E6] pb-10 sm:pb-5 mb-10">
+      <div className=" w-2/3 px-20 py-10 md:px-10 sm:w-full sm:px-5  ">
+        <div className="mb-10 flex h-fit space-x-3 border-b border-[#E6E6E6] pb-10 sm:pb-5">
           <div className="h-[45px] w-[45px] rounded-full bg-[#E6E6E6] text-[27px] sm:h-[33px] sm:w-[33px] sm:text-[20px]">
             <i className="fa-solid fa-tag text-[rgb(45, 45, 45)] ml-[9px] mt-[9px] rotate-180 rotate-90 sm:mt-[8px] sm:ml-[8px]"></i>
           </div>
@@ -55,7 +55,7 @@ const TagPosts = () => {
           <BlogPosts posts={posts} />
         </div>
       </div>
-      <div className="w-1/3 sm:w-full py-10 px-20 md:px-10 sm:px-5 border-l border-gray">
+      <div className="w-1/3 border-l border-gray py-10 px-20 md:px-10 sm:w-full sm:px-5">
         <TagsTabs />
       </div>
     </div>

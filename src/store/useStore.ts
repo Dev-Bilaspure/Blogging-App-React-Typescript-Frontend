@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { INTERNAL_SERVER_ERROR } from "@/utils/errorTypes";
+import { AXIOS_ERROR, INTERNAL_SERVER_ERROR } from "@/utils/errorTypes";
 import { debug_mode } from "@/debug-controller";
 
 const ORIGIN = "http://localhost:8000";
@@ -14,26 +14,34 @@ export const useStore = create<State, [["zustand/immer", never]]>(
     actions: {
       auth: {
         initializeUser: async () => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.get(`${ORIGIN}/api/auth/me`);
-            console.log({jjjjjjjjjjjjj: response.data});
-            
-            if (response.data.success) {
-              set((state) => {
-                state.data.authenticatedUser = response.data.user;
-              });
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const response = await axios.get(`${ORIGIN}/api/auth/me`);
+              if (response.data.success) {
+                set((state) => {
+                  state.data.authenticatedUser = response.data.user;
+                });
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            debug_mode && console.log(error);
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         loginUser: async ({ email, password }) => {
           const response = await axios.post(`${ORIGIN}/api/auth/login`, {
