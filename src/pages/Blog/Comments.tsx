@@ -26,7 +26,12 @@ const Comments = () => {
 const Comment = ({ comment, ...props }) => {
   const isLiked = false;
   return (
-    <div className={twMerge("mt-[50px] border-b border-[#E6E6E6] pb-5 ", props.className)}>
+    <div
+      className={twMerge(
+        "mt-[50px] border-b border-[#E6E6E6] pb-5 ",
+        props.className
+      )}
+    >
       <div className="flex h-9 space-x-3">
         <img src={defaultUserPic} className="cursor-pointer rounded-full" />
         <div className="item-center flex cursor-pointer flex-col justify-center">
@@ -49,8 +54,8 @@ const Comment = ({ comment, ...props }) => {
             <div className="item-center flex cursor-pointer justify-center">
               <PopoverMoreIcon
                 element={
-                  <div className="flex flex-col px-5 py-2 pt-0">
-                    <div className="flex justify-center border-b border-[#E6E6E6] py-2">
+                  <div className="flex flex-col  py-2 pt-1">
+                    <div className="flex justify-center border-b border-[#E6E6E6] py-2 px-5">
                       <Button
                         variant="text"
                         color="error"
@@ -59,7 +64,7 @@ const Comment = ({ comment, ...props }) => {
                         Delete
                       </Button>
                     </div>
-                    <div className="flex justify-center py-1">
+                    <div className="flex justify-center py-1 px-5 pt-2">
                       <Button
                         variant="text"
                         color="inherit"
@@ -70,7 +75,9 @@ const Comment = ({ comment, ...props }) => {
                     </div>
                   </div>
                 }
-                buttonElement={<MoreHorizIcon color="inherit" />}
+                buttonElement={
+                  <MoreHorizIcon color="inherit" style={{ fontSize: 20 }} />
+                }
               />
             </div>
           </Tooltip>

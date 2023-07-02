@@ -37,6 +37,7 @@ const TextEditor = ({ setIsSaving, blogContent, setBlogContent, ...props }) => {
 
   const handleChange = (html) => {
     setBlogContent(html);
+    console.log(html)
   };
 
   return (

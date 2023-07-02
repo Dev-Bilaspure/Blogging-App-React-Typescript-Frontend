@@ -27,9 +27,9 @@ const MiddleBar = ({ textToRead, ...props }) => {
           <Tooltip title="Like" placement="top-start">
             <div className="flex flex-row space-x-2 ">
               {isLiked ? (
-                <i className="fa-solid fa-thumbs-up flex cursor-pointer flex-row items-center justify-center text-[22px] sm:text-[17px]"></i>
+                <i className="fa-solid fa-thumbs-up flex cursor-pointer flex-row items-center justify-center text-[21px] sm:text-[17px]"></i>
               ) : (
-                <i className="fa-regular fa-thumbs-up flex cursor-pointer flex-row items-center justify-center text-[22px] sm:text-[17px]"></i>
+                <i className="fa-regular fa-thumbs-up flex cursor-pointer flex-row items-center justify-center text-[21px] sm:text-[17px]"></i>
               )}
               <p className="mt-1 font-sans text-[14px] sm:text-[13px]">200</p>
             </div>
@@ -37,11 +37,11 @@ const MiddleBar = ({ textToRead, ...props }) => {
           <Tooltip title="Bookmark" placement="top">
             {isBookmarked ? (
               <i
-                className="fa-solid fa-bookmark  flex cursor-pointer flex-row items-center justify-center text-[20px] sm:text-[17px]"
+                className="fa-solid fa-bookmark  flex cursor-pointer flex-row items-center justify-center text-[18px] sm:text-[17px]"
                 style={{ color: "rgb(26,136,22)" }}
               ></i>
             ) : (
-              <i className="fa-regular fa-bookmark flex cursor-pointer flex-row items-center justify-center text-[20px] sm:text-[17px]"></i>
+              <i className="fa-regular fa-bookmark flex cursor-pointer flex-row items-center justify-center text-[18px] sm:text-[17px]"></i>
             )}
           </Tooltip>
           <Tooltip title="Comments" placement="top-start">

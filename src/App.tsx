@@ -14,6 +14,8 @@ import Settings from "./pages/Settings";
 import SplashScreen from "./pages/SplashScreen";
 import TestingQuill from "./pages/TestingQuill/TestingQuill";
 import Write from "./pages/Write";
+import UserProfile from "./pages/UserProfile";
+import UserFFs from "./pages/UserProfile/UserFFs";
 
 const RoutesList = () => {
   return (
@@ -21,7 +23,7 @@ const RoutesList = () => {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Authentication />} />
       <Route path="/signup" element={<Authentication />} />
-      <Route path="/blog/:id" element={<Blog />} />
+      <Route path="/blog/:postId" element={<Blog />} />
       <Route path="/testing" element={<TestingImageUpload />} />
       <Route path="/tag/:tag" element={<TagPosts />} />
       <Route path="/liked" element={<LikedPosts />} />
@@ -30,6 +32,9 @@ const RoutesList = () => {
       <Route path="/testingquill" element={<TestingQuill />} />
       <Route path="/write" element={<Write />} />
       <Route path="/edit/:postId" element={<Write />} />
+      <Route path="/user/:username" element={<UserProfile />}/>
+      <Route path="/user/:username/followers" element={<UserFFs />}/>
+      <Route path="/user/:username/followings" element={<UserFFs />}/>
     </Routes>
   );
 };

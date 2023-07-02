@@ -1,0 +1,24 @@
+.quill.ql-style {
+  .ql-toolbar {
+    display: none;
+  }
+  .ql-container {
+    border: none;
+  }
+  .ql-editor {
+    padding: 0;
+    line-height: 1.9;
+    font-family: "Merriweather", serif;
+    font-size: 16px;
+  }
+}
+
+/* Styles for screens with a maximum width of 600px */
+@media (max-width: 1024px) {
+  .quill.ql-style {
+    .ql-editor {
+      font-size: 15px;
+      line-height: 1.7;
+    }
+  }
+}

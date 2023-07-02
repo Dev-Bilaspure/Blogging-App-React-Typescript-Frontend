@@ -42,7 +42,7 @@ const BookmarkedPosts = () => {
 
   return (
     <div className={`flex  w-full flex-row sm:flex-col`}>
-      <div className=" w-2/3 px-20 py-10 md:px-10 sm:w-full sm:px-5  ">
+      <div className=" w-2/3 px-[100px] md:px-20 py-10 sm:w-full sm:px-5  ">
         <div className="mb-10 flex h-fit space-x-3 border-b border-[#E6E6E6] pb-10 sm:pb-5">
           <div className="h-[45px] w-[45px] rounded-full bg-[#E6E6E6] text-[25px] sm:h-[33px] sm:w-[33px] sm:text-[20px]">
             <i className="fa-solid fa-bookmark text-[rgb(45, 45, 45)] ml-[13px] mt-[9px]  sm:mt-[8px] sm:ml-[8px]"></i>

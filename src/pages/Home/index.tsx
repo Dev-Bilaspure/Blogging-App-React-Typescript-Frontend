@@ -34,12 +34,12 @@ const Home = (props) => {
   return (
     <div className={twMerge(`mb-20 w-full`, props.className)}>
       <HomeBanner className={`${authenticatedUser ? 'hidden' : 'block'}`} />
-      <div className="flex w-full flex-row pt-[20px] sm:flex-col sm:space-y-10">
-        <div className="w-2/3 px-20 md:px-10 sm:w-full sm:px-5">
+      <div className="flex w-full flex-row  sm:flex-col sm:space-y-10">
+        <div className="w-2/3 px-[100px] md:px-20 sm:w-full sm:px-5 pt-[20px]">
           <BlogPosts posts={posts} className="mt-10" />
         </div>
-        <div className="w-1/3 space-y-5 border-l border-gray px-20 md:px-10 sm:w-full sm:border-none sm:px-5">
-          <div className="flex flex-col mt-10">
+        <div className="w-1/3 space-y-5 border-l border-gray px-20 pl-10 md:px-10 sm:w-full sm:border-none sm:px-5">
+          <div className="flex flex-col mt-10 pt-[20px]">
             <TagsTabs />
             <Suggestions />
           </div>
