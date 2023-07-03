@@ -16,6 +16,7 @@ import TestingQuill from "./pages/TestingQuill/TestingQuill";
 import Write from "./pages/Write";
 import UserProfile from "./pages/UserProfile";
 import UserFFs from "./pages/UserProfile/UserFFs";
+import NotFound from "./pages/NotFound";
 
 const RoutesList = () => {
   return (
@@ -35,6 +36,7 @@ const RoutesList = () => {
       <Route path="/user/:username" element={<UserProfile />}/>
       <Route path="/user/:username/followers" element={<UserFFs />}/>
       <Route path="/user/:username/followings" element={<UserFFs />}/>
+      <Route path="/notfound" element={<NotFound />} />
     </Routes>
   );
 };

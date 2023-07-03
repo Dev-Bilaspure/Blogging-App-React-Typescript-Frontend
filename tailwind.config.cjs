@@ -20,6 +20,7 @@ module.exports = {
         arimo: ['Arimo', 'sans-serif'],
         merriWeather: ['Merriweather', 'serif'],
         outfit: ['Outfit', 'sans-serif'],
+        nanum: ['Nanum Myeongjo', 'serif']
       },
       colors: {
         black: "#222222",

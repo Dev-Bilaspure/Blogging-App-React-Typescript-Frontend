@@ -65,11 +65,9 @@ const Blog = (props) => {
         <div className="mt-2 h-[45px] w-full border-b-2 border-t-2 border-[#F2F2F2] border-[#F2F2F2]">
           <MiddleBar textToRead={convert(htmlStr)} />
         </div>
-        <div className="mt-5">
-          <div className="mb-10 font-merriWeather text-[16px] sm:text-[15px]">
-            <ReactQuill value={htmlStr} readOnly={true} className="ql-style" />
+          <div className="mt-10 mb-20 font-merriWeather text-[16px] sm:text-[15px] pb-20">
+            <ReactQuill value={htmlStr} readOnly={true} className="ql-style-blog" />
           </div>
-        </div>
       </div>
     </div>
   );

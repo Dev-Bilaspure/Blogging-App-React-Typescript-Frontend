@@ -6,7 +6,13 @@ import "./TextEditorStyles.css";
 import { twMerge } from "tailwind-merge";
 import { convert } from "html-to-text";
 
-const TextEditor = ({ setIsSaving, blogContent, setBlogContent, ...props }) => {
+const TextEditor = ({
+  description,
+  setDescription,
+  isConnected,
+  handleDescriptionChange,
+  ...props
+}) => {
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -33,23 +39,23 @@ const TextEditor = ({ setIsSaving, blogContent, setBlogContent, ...props }) => {
     "color",
     "background",
   ];
-  
 
   const handleChange = (html) => {
-    setBlogContent(html);
-    console.log(html)
+    setDescription(html);
+    handleDescriptionChange(html);
   };
 
   return (
     <div className={twMerge("text-editor-container", props.className)}>
       <ReactQuill
-        value={blogContent}
+        value={description}
         onChange={handleChange}
         theme="snow"
         modules={modules}
         formats={formats}
         placeholder="Tell your story..."
         className="ql-style"
+        readOnly={!isConnected}
       />
     </div>
   );

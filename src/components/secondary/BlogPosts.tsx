@@ -131,6 +131,15 @@ const BlogPost = (props) => {
                           Edit
                         </Button>
                       </div>
+                      <div className="flex justify-center py-1 px-5 pt-2">
+                        <Button
+                          variant="text"
+                          color="inherit"
+                          style={{ textTransform: "none", padding: 0 }}
+                        >
+                          Unpublish
+                        </Button>
+                      </div>
                     </div>
                   }
                   buttonElement={

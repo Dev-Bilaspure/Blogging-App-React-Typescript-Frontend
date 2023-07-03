@@ -129,22 +129,16 @@ interface State {
     };
 
     post: {
-      createUpdatePost: ({
-        title,
-        description,
-        image,
-        isPublished,
-        tags,
-        userId,
+      updatePost: ({
         postId,
+        isPublished,
+        isCommentsEnabled,
+        tags
       }: {
-        title?: string;
-        description?: string;
-        image?: string;
-        isPublished?: boolean;
-        tags?: string[];
-        userId: string;
-        postId: string;
+        postId: string,
+        isPublished?: boolean,
+        isCommentsEnabled?: boolean,
+        tags?: string[]
       }) => Promise<{
         success: boolean;
         message: string;

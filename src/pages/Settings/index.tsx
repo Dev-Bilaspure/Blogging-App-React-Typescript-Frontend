@@ -12,8 +12,6 @@ const Settings = () => {
   const {
     data: { authenticatedUser },
   } = useStore();
-
-  console.log({ authenticatedUser });
   
   return (
     !authenticatedUser ? <Navigate to="/login" /> : 

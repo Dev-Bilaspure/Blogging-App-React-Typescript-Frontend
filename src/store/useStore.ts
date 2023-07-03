@@ -268,28 +268,39 @@ export const useStore = create<State, [["zustand/immer", never]]>(
         },
       },
       post: {
-        createUpdatePost: async (postInfo) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.post(
-              `${ORIGIN}/api/posts/create-update-post`,
-              { ...postInfo, userId }
-            );
-            if (response.data.success) {
-              const { success, message, post } = response.data;
-              return { success, message, post };
+        updatePost: async (postInfo) => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const authorId = get().data.authenticatedUser._id;
+              const { postId, ...otherPostInfo } = postInfo;
+              const response = await axios.put(
+                `${ORIGIN}/api/posts/${postId}`,
+                { authorId, ...otherPostInfo }
+              );
+              if (response.data.success) {
+                const { success, message, post } = response.data;
+                return { success, message, post };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            debug_mode && console.log(error);
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         publishPost: async (postId) => {
           const storedToken = Cookies.get("token");

@@ -1,10 +1,8 @@
 import * as React from "react";
 import Backdrop from "@mui/material/Backdrop";
-import Box from "@mui/material/Box";
 import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import CloseIcon from "@mui/icons-material/Close";
 const DeletePostModal = ({
   isDeletePostModalOpen,
@@ -28,7 +26,7 @@ const DeletePostModal = ({
         }}
       >
         <Fade in={isDeletePostModalOpen}>
-          <div className="absolute top-1/2 left-1/2 w-2/5 -translate-x-1/2 -translate-y-1/2 transform bg-white ">
+          <div className="absolute top-1/2 left-1/2 w-2/5 md:w-2/3 sm:w-9/10 -translate-x-1/2 -translate-y-1/2 transform bg-white ">
             <div className="absolute right-0 m-3 flex justify-end">
               <Button
                 variant="text"
@@ -44,7 +42,7 @@ const DeletePostModal = ({
                 <CloseIcon style={{ color: "#757575", fontSize: 20 }} />
               </Button>
             </div>
-            <div className="flex flex-col items-center justify-center py-20 px-10 text-center md:w-1/2 sm:w-5/6 sm:py-10 sm:px-5">
+            <div className="flex flex-col items-center justify-center py-20 px-10 text-center md:w-full sm:py-10 sm:px-5">
               <p className="text-[30px] font-medium sm:text-[25px]">
                 Delete Story
               </p>
