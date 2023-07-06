@@ -13,7 +13,12 @@ export default defineConfig({
     exclude: ["playwright"],
   },
   plugins: [react()],
+
   server: {
     port: 3001, // fixed port set for e2e testing
+  },
+
+  build: {
+    chunkSizeWarningLimit: 5000,
   },
 });
