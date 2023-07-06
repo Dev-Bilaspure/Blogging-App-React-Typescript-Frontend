@@ -101,7 +101,7 @@ const UsernameEdit = (props) => {
             <input
               type="text"
               disabled={true}
-              value={`${window.location.origin}/@${username}`}
+              value={`${window.location.origin}/${username}`}
               className={`overflow-wrap-break-word w-full border-b border-[#E6E6E6] bg-white pb-0  text-[14px] outline-none focus:outline-none`}
               placeholder="Username"
             />

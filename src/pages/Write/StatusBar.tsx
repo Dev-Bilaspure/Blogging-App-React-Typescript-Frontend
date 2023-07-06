@@ -16,6 +16,7 @@ const StatusBar = ({
   setIsPublishing,
   description,
   isConnected,
+  post,
   ...props
 }) => {
   const { pathname } = useLocation();
@@ -24,6 +25,7 @@ const StatusBar = ({
   return (
     <div>
       <PublishPostModal
+        post={post}
         postId={postId}
         setIsPublishPostModalOpen={setIsPublishPostModalOpen}
         isPublishPostModalOpen={isPublishPostModalOpen}

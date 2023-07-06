@@ -30,6 +30,7 @@ import { twMerge } from "tailwind-merge";
 import { useStore } from "@/store/useStore";
 import { useNavigate } from "react-router-dom";
 import { debug_mode } from "@/debug-controller";
+import SuccessSnackBar from "./SuccessSnackBar";
 
 const PublishPostModal = ({
   isPublishPostModalOpen,
@@ -37,6 +38,7 @@ const PublishPostModal = ({
   setIsPublishing,
   isPublishing,
   postId,
+  post,
 }) => {
   const [isNextClicked, setIsNextClicked] = React.useState(false);
   const [tags, setTags] = React.useState<string[]>([]);
@@ -71,30 +73,29 @@ const PublishPostModal = ({
         setIsPublishSuccess(true);
         setIsPublishing(false);
         handleClose();
-        navigate(`/blog/${response.post.postId}`);
+        navigate(`/blog/${postId}`);
       }
       debug_mode && console.log(response);
     } catch (error) {
-      console.log(error);
+      debug_mode && console.log(error);
     }
     setIsPublishing(false);
     handleClose();
   };
+
+  React.useEffect(() => {
+    if (post) {
+      if (post.tags?.length > 0) setTags(post.tags);
+      setIsCommentsEnabled(post?.isCommentsEnabled);
+    }
+  }, [isNextClicked]);
   return (
     <div className="sm:px-5">
-      <Snackbar
+      <SuccessSnackBar
+        handleClose={() => setIsPublishSuccess(false)}
+        message={"Post published successfully!"}
         open={isPublishedSuccess}
-        autoHideDuration={5000}
-        onClose={() => setIsPublishSuccess(false)}
-      >
-        <Alert
-          onClose={() => setIsPublishSuccess(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Blog published successfully!
-        </Alert>
-      </Snackbar>
+      />
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -211,23 +212,23 @@ const ConfirmPublishForm = ({
   return (
     <div className="mt-10 w-full">
       <div className="w-full px-5 sm:px-0">
-        <div className="mt-5 flex justify-center space-x-8">
+        <div className="mt-5 flex justify-center space-x-8 sm:space-x-6 xs:justify-start xs:space-x-5">
           <p className="flex items-center justify-center text-[15px] font-medium sm:text-[13px]">
             Add Tags:
           </p>
-          <div>
+          <div className="w-2/5 md:w-1/2 sm:w-[120px]">
             <MultipleSelectCheckmarks
               tags={tags}
               setTags={setTags}
               className={"flex items-center justify-center"}
               isPublishing={isPublishing}
             />
-            <p className="flex justify-end text-[12px] text-[#757575]">{`${
-              3 - tags.length
+            <p className="flex justify-end text-[12px] text-[#757575] sm:text-[10px]">{`${
+              3 - tags?.length
             }/3`}</p>
           </div>
         </div>
-        <div className="mt-5 flex justify-center space-x-5">
+        <div className="mt-5 flex justify-center space-x-5 xs:justify-start">
           <p className="flex items-center justify-center text-[15px] font-medium sm:text-[13px]">
             Enable Comments:
           </p>
@@ -285,7 +286,7 @@ const MenuProps = {
   PaperProps: {
     style: {
       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 210,
+      width: "fit-content",
     },
   },
 };
@@ -305,10 +306,9 @@ function MultipleSelectCheckmarks({ tags, setTags, isPublishing, ...props }) {
 
   return (
     <div className={twMerge("", props.className)}>
-      <FormControl sx={{ m: 0, width: 210 }}>
+      <FormControl sx={{ m: 0, width: "100%" }}>
         <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
         <Select
-          style={{ width: 210 }}
           disabled={isPublishing}
           labelId="demo-multiple-checkbox-label"
           id="demo-multiple-checkbox"
@@ -335,9 +335,9 @@ function MultipleSelectCheckmarks({ tags, setTags, isPublishing, ...props }) {
             <MenuItem
               key={name}
               value={name}
-              style={{ height: "40px", width: 210 }}
+              style={{ height: "40px", width: "fit-content" }}
             >
-              <Checkbox checked={tags.indexOf(name) > -1} />
+              <Checkbox checked={tags?.indexOf(name) > -1} />
               <ListItemText primary={_.capitalize(name)} />
             </MenuItem>
           ))}

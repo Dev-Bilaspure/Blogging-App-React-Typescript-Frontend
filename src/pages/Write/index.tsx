@@ -21,8 +21,8 @@ import {
 import NotFound from "../NotFound";
 import UnauthorizedAccess from "../UnauthorizedAccess";
 import StatusSnackbar from "@/components/secondary/StatusSnackbar";
-
-// const socket = io("http://localhost:8000");
+import { isValidObjectId } from "@/utils/helperMethods";
+import { SERVER_ORIGIN } from "@/constants";
 
 const Write = (props) => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -45,17 +45,41 @@ const Write = (props) => {
   } = useStore();
 
   useEffect(() => {
-    if (!authenticatedUser) return;
-    const socketTemp = io("http://localhost:8000");
+    if (!authenticatedUser) {
+      navigate("/login");
+      return;
+    }
+    if (pathname.split("/")[1] === "write") {
+      setPost({});
+      setTitle("");
+      setDescription("");
+      setImage("");
+      return;
+    }
+    if (pathname.split("/")[1] === "edit" && !isValidObjectId(params?.postId)) {
+      setIsResourceNotFound(true);
+      return;
+    }
+  }, [pathname.split("/")[1]]);
+
+  useEffect(() => {
+    if (!authenticatedUser) {
+      navigate("/login");
+      return;
+    }
+    console.log("connecting to socket");
+    const socketTemp = io(SERVER_ORIGIN);
     setSocket(socketTemp);
     return () => {
       socket?.close();
     };
   }, []);
   useEffect(() => {
-    if (!authenticatedUser) return;
+    if (!authenticatedUser) {
+      navigate("/login");
+      return;
+    }
     if (pathname.split("/")[1] === "edit") {
-      console.log("get post by id");
       socket?.emit("getPostById", {
         postId: params.postId,
         userId: authenticatedUser._id,
@@ -90,7 +114,7 @@ const Write = (props) => {
       setIsUnauthorized(false);
       if (data.success) {
         if (data.post.isPublished) {
-          navigate(`/blog/${data.post._id}`);
+          setIsResourceNotFound(true);
           return;
         }
         setPost(data.post);
@@ -182,6 +206,7 @@ const Write = (props) => {
             setIsPublishing={setIsPublishing}
             description={description}
             isConnected={isConnected}
+            post={post}
           />
           <TextareaAutosize
             className="mt-2 w-full resize-none bg-white py-3 font-merriWeather text-[40px] outline-none sm:text-[28px]"
@@ -197,6 +222,7 @@ const Write = (props) => {
             setImage={setImage}
             image={image}
             handleImageChange={handleImageChange}
+            page={pathname.split("/")[1]}
           />
           <div className="mt-10">
             <TextEditor

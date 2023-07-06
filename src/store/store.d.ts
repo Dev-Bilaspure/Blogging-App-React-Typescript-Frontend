@@ -3,6 +3,7 @@ interface State {
     authenticatedUser: any;
   };
   actions: {
+    setAuthenticatedUser: (user: any) => void;
     auth: {
       initializeUser: () => Promise<{
         success: boolean;
@@ -42,6 +43,13 @@ interface State {
     };
 
     user: {
+      getUserByUsername: (username: string) => Promise<{
+        success: boolean;
+        message: string;
+        user?: any;
+        error?: any;
+        errorType?: string;
+      }>;
       updateUser: ({
         firstName,
         lastName,
@@ -108,18 +116,18 @@ interface State {
       bookmarkAPost: (postId: string) => Promise<{
         success: boolean;
         message: string;
-        post?: any;
+        user?: any;
         error?: any;
         errorType?: string;
       }>;
       unbookmarkAPost: (postId: string) => Promise<{
         success: boolean;
         message: string;
-        post?: any;
+        user?: any;
         error?: any;
         errorType?: string;
       }>;
-      getUsersBookmarkedPosts: (userId: string) => Promise<{
+      getUsersBookmarkedPosts: () => Promise<{
         success: boolean;
         message: string;
         posts?: any[];
@@ -129,6 +137,13 @@ interface State {
     };
 
     post: {
+      getNonPublishedPostsByUserId: (userId: string) => Promise<{
+        success: boolean;
+        message: string;
+        posts?: any[];
+        error?: any;
+        errorType?: string;
+      }>
       updatePost: ({
         postId,
         isPublished,
@@ -136,9 +151,9 @@ interface State {
         tags
       }: {
         postId: string,
-        isPublished?: boolean,
-        isCommentsEnabled?: boolean,
-        tags?: string[]
+        isPublished: boolean,
+        isCommentsEnabled: boolean,
+        tags: string[]
       }) => Promise<{
         success: boolean;
         message: string;
@@ -223,9 +238,7 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
-      getUsersLikedPosts: (
-        userId: string
-      ) => Promise<{
+      getUsersLikedPosts: () => Promise<{
         success: boolean;
         message: string;
         posts?: any[];

@@ -19,9 +19,14 @@ const buttonStyle = {
   paddingTop: 0,
   paddingBottom: 0,
 };
-const PostImage = ({ handleImageChange, image, setImage, ...props }) => {
+const PostImage = ({ handleImageChange, image, setImage, page, ...props }) => {
   const [previewImage, setPreviewImage] = useState("");
   const [isUpdatingImage, setIsUpdatingImage] = useState(false);
+
+  useEffect(() => {
+    if(page === 'write') 
+      setPreviewImage('')
+  }, [page])
 
   const handleOnChange = async (e) => {
     setIsUpdatingImage(true);
@@ -31,7 +36,7 @@ const PostImage = ({ handleImageChange, image, setImage, ...props }) => {
     if (image.length > 0) {
       try {
         const response = await deleteImage(image);
-        console.log({ imageDeleteResponse: response });
+        debug_mode && console.log({ imageDeleteResponse: response });
       } catch (error) {
         debug_mode && console.log(error);
       }
@@ -76,7 +81,7 @@ const PostImage = ({ handleImageChange, image, setImage, ...props }) => {
               onChange={handleOnChange}
               className="hidden"
               id="profilePictureInput"
-              accept=".png, .jpg, .jpeg"
+              accept=".png, .jpg, .jpeg, .gif"
             />
             {!(image.length || previewImage) ? (
               <Tooltip title="Add Image" placement="bottom">

@@ -4,14 +4,46 @@ import Modal from "@mui/material/Modal";
 import Fade from "@mui/material/Fade";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
+import { useStore } from "@/store/useStore";
+import { debug_mode } from "@/debug-controller";
+import SuccessSnackBar from "./SuccessSnackBar";
+import ErrorSnackBar from "./ErrorSnackBar";
 const DeletePostModal = ({
   isDeletePostModalOpen,
   setIsDeletePostModalOpen,
-  postId
+  postId,
+  ...props
 }) => {
+  const [openSuccessSnackBar, setSuccessSnackBar] = React.useState(false);
+  const [errorSnackBar, setErrorSnackBar] = React.useState(false);
+  const [isProcessing, setIsProcessing] = React.useState(false);
+
   const handleClose = () => setIsDeletePostModalOpen(false);
+  const {data: {authenticatedUser}, actions: {post: {deletePost}}} = useStore();
+  const handleDelete = async() => {
+    if(!authenticatedUser || isProcessing) return;
+    setIsProcessing(true);
+    try {
+      const response = await deletePost(postId);
+      if(response.success) {
+        setSuccessSnackBar(true);
+        setIsDeletePostModalOpen(false);
+        if(props?.setPosts)
+          props.setPosts(prev => prev.filter(post => post._id !== postId));
+      } else {
+        setErrorSnackBar(true);
+      }
+      debug_mode && console.log(response);
+    } catch(error) {
+      debug_mode && console.log(error);
+    } finally {
+      setIsProcessing(false);
+    }
+  }
   return (
     <div className="sm:px-5">
+      <SuccessSnackBar open={openSuccessSnackBar} handleClose={() => setSuccessSnackBar(false)} message={"Post deleted successfully!"}/>
+      <ErrorSnackBar open={errorSnackBar} handleClose={() => setErrorSnackBar(false)} message={"Error deleting post!"}/>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
@@ -72,9 +104,12 @@ const DeletePostModal = ({
                     textTransform: "none",
                     boxShadow: "none",
                     backgroundColor: "#C94A4A",
+                    opacity: isProcessing ? 0.5 : 1,
                   }}
+                  onClick={handleDelete}
+                  disabled={isProcessing}
                 >
-                  <p className="sm:text-[13px]">Delete</p>
+                  <p className="sm:text-[13px] text-[#ffffff]">{isProcessing ? 'Deleting' : 'Delete'}</p>
                 </Button>
               </div>
             </div>

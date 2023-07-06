@@ -19,7 +19,7 @@ function PopoverMoreIcon({ element, buttonElement }) {
   const id = open ? "simple-popover" : undefined;
 
   return (
-    <div>
+    <div className="">
       <Button
         aria-describedby={id}
         variant="text"

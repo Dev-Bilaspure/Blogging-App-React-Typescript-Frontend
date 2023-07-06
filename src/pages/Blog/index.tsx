@@ -1,50 +1,110 @@
 import { debug_mode } from "@/debug-controller";
-import React, { useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { defaultUserPic } from "@/constants";
 import { Button, Typography } from "@mui/material";
-import bannerimage from "../../assets/images/bannerImg.jpg";
 import MiddleBar from "./MiddleBar";
 import { twMerge } from "tailwind-merge";
 import { convert } from "html-to-text";
 import "./blogContentStyle.css";
 import ReactQuill from "react-quill";
+import { useStore } from "@/store/useStore";
+import NotFound from "../NotFound";
+import SplashScreen from "../SplashScreen";
+import { getTimeAgo, isValidObjectId } from "@/utils/helperMethods";
+import { INTERNAL_SERVER_ERROR, RESOURCE_NOT_FOUND } from "@/utils/errorTypes";
+import _ from "lodash";
+import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
 
 const Blog = (props) => {
-  const [isFollowing, setIsFollowing] = useState(false);
-  const location = useLocation();
-  const { id } = useParams();
-  const sampleText = `This morning, I spent half an hour
-   trying the Apple Vision Pro headset. Here’s the punch line: 
-   This is one freaking mind-blowing piece of tech. I mean, 
-   when Steve Jobs unveiled the iPhone in 2007, you could feel 
-   the paradigm shifting in real time. This was like that, but 
-   better. In case you’ve been on news blackout for the last 24 
-   hours, we’re talking about Apple’s augmented-reality headset. 
-   Its development was supposedly insanely expensive, internally contentious, 
-   and repeatedly delayed. But the result is so advanced and polished, 
-   it makes Meta’s VR headsets look like Blackberries.`;
+  const [post, setPost] = useState<any>({});
+  const [isResourceNotFound, setIsResourceNotFound] = useState<boolean>(false);
+  const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState<boolean>(false);
+  const { postId } = useParams();
 
-  const htmlStr = `<p>deok</p><h2>The mount fuji story:</h2><p class="ql-align-center">We the secrets</p><p>the <strong>For all the one <em>dev is </em> for most of</strong> us is the</p>`;
-  if (debug_mode) {
-    console.log(id);
-  }
-  return (
+  const navigate = useNavigate();
+
+  const {
+    data: { authenticatedUser },
+    actions: {
+      user: { unfollowAUser, followAUser },
+      post: { getPostById },
+    },
+  } = useStore();
+
+  useEffect(() => {
+    if (!postId) return;
+    setIsFetching(true);
+    if(!isValidObjectId(postId)) {
+    setIsResourceNotFound(true);
+    setIsFetching(false);
+    return;
+    }
+    (async () => {
+      try {
+        const response = await getPostById(postId);
+
+        if (response.success) {
+          if (response.post.isPublished === false) {
+            setIsResourceNotFound(true);
+            setIsFetching(false);
+            return;
+          }
+          setPost(response.post);
+          setIsFollowing(
+            authenticatedUser &&
+              response.post.authorInfo.followers.includes(authenticatedUser._id)
+          );
+        } else {
+          const errorType = response?.error?.response?.data?.errorType;
+          if (errorType === RESOURCE_NOT_FOUND) {
+            setIsResourceNotFound(true);
+          }
+        }
+        debug_mode && console.log(response);
+        setIsFetching(false);
+      } catch (error: any) {
+        setIsFetching(false);
+      }
+    })();
+  }, []);
+
+  return isFetching ? (
+    <div className="flex justify-center mt-40 sm:mt-[100px]">
+      <FetchingDataLoader />
+    </div>
+  ) : isResourceNotFound ? (
+    <NotFound />
+  ) : (
     <div
       className={twMerge("flex justify-center pt-10 sm:px-5", props.className)}
     >
       <div className="w-1/2 lg:w-3/4 xs:w-full">
         <p className="font-merriWeather text-[40px] font-bold leading-tight text-[#373737] lg:text-[40px] md:text-[35px] sm:text-[28px] sm:leading-9">
-          The title is here a big one. The title is here a big one. The title is
-          here a big one
+          {post?.title}
         </p>
-        <img src={bannerimage} className="mt-5 rounded-lg" />
-        <div className="mt-10 pb-10">
+        <img
+          src={post?.image?.length > 0 ? post?.image : ""}
+          className="h-hull mt-5 w-full rounded-lg object-cover"
+        />
+        <div className="mt-10 pb-10 sm:pb-5">
           <div className="flex h-[42px] space-x-3 ">
-            <img src={defaultUserPic} className="cursor-pointer rounded-full" />
-            <div className="item-center flex cursor-pointer flex-col justify-center space-y-0">
-              <p className="text-[14px]">Dev Bilaspure</p>
-              <p className="text-[13px] text-[#757575]">16 mins ago</p>
+            <Link to={`/${post.authorId}`}>
+              <img
+                src={post?.authorInfo?.profilePicture || defaultUserPic}
+                className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover sm:h-[40px] sm:w-[40px]"
+              />
+            </Link>
+            <div className="item-center flex cursor-pointer flex-col justify-center space-y-1">
+              <Link to={`/${post.authorId}`}>
+                <p className="text-[14px]">
+                  {`${post?.authorInfo?.firstName} ${post?.authorInfo?.lastName}`}
+                </p>
+              </Link>
+              <p className="text-[13px] font-medium text-[#757575]">
+                {getTimeAgo(post?.createdAt)}
+              </p>
             </div>
             <Button
               variant="text"
@@ -55,6 +115,30 @@ const Blog = (props) => {
                 textTransform: "none",
                 height: "fit-content",
               }}
+              onClick={async () => {
+                if (!authenticatedUser) {
+                  navigate("/login");
+                  return;
+                }
+                if (authenticatedUser._id === post?.authorId) return;
+                try {
+                  if (isFollowing) {
+                    const response = await unfollowAUser(post.authorInfo._id);
+                    if (response.success) {
+                      setIsFollowing(false);
+                    }
+                    debug_mode && console.log(response);
+                  } else {
+                    const response = await followAUser(post.authorInfo._id);
+                    if (response.success) {
+                      setIsFollowing(true);
+                    }
+                    debug_mode && console.log(response);
+                  }
+                } catch (error) {
+                  debug_mode && console.log(error);
+                }
+              }}
             >
               <p className="text-[14px] font-medium">
                 {isFollowing ? "Following" : "Follow"}
@@ -62,12 +146,38 @@ const Blog = (props) => {
             </Button>
           </div>
         </div>
-        <div className="mt-2 h-[45px] w-full border-b-2 border-t-2 border-[#F2F2F2] border-[#F2F2F2]">
-          <MiddleBar textToRead={convert(htmlStr)} />
+        <div className="mt-2 h-[45px] w-full border-b-2 border-t-2 border-[#F2F2F2] border-[#F2F2F2] sm:h-[40px]">
+          <MiddleBar
+            textToRead={convert(post?.description)}
+            post={post}
+            setPost={setPost}
+          />
         </div>
-          <div className="mt-10 mb-20 font-merriWeather text-[16px] sm:text-[15px] pb-20">
-            <ReactQuill value={htmlStr} readOnly={true} className="ql-style-blog" />
+        {post?.tags?.length > 0 && (
+          <div className="mt-7 flex space-x-5 sm:mt-5 sm:space-x-2">
+            <p className="flex items-center justify-center text-[17px] font-medium sm:text-[13px]">
+              Topics:{" "}
+            </p>
+            <div className="flex items-center justify-center space-x-3 sm:space-x-2">
+              {post?.tags?.map((item) => {
+                return (
+                  <Link to={`/tag/${item}`}>
+                    <div className="flex w-fit cursor-pointer items-center justify-center rounded-full border border-[#E6E6E6] bg-[#E8E8E8] px-[10px] py-[2px] pt-1 text-[13px] hover:shadow-lg focus:shadow-sm  sm:px-[5px] sm:py-0 sm:text-[11px]">
+                      {_.capitalize(item)}
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
+        )}
+        <div className="mt-10 mb-20 pb-20 font-merriWeather text-[16px] sm:mt-5 sm:text-[15px]">
+          <ReactQuill
+            value={post?.description}
+            readOnly={true}
+            className="ql-style-blog"
+          />
+        </div>
       </div>
     </div>
   );

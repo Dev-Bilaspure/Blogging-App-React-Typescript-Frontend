@@ -72,7 +72,7 @@ const BioEdit = (props) => {
             value={bio}
             className={`overflow-wrap-break-word w-full border-b border-[#E6E6E6] bg-white pb-2  outline-none focus:outline-none ${
               editBio && "border-black"
-            } text-[14px]`}
+            } text-[13px]`}
             placeholder="Short Bio"
             maxLength={160}
             onChange={(e) => {

@@ -4,14 +4,20 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { AXIOS_ERROR, INTERNAL_SERVER_ERROR } from "@/utils/errorTypes";
 import { debug_mode } from "@/debug-controller";
+import { SERVER_ORIGIN } from "@/constants";
 
-const ORIGIN = "http://localhost:8000";
+const ORIGIN = SERVER_ORIGIN;
 export const useStore = create<State, [["zustand/immer", never]]>(
   immer((set, get) => ({
     data: {
       authenticatedUser: null,
     },
     actions: {
+      setAuthenticatedUser: (user) => {
+        set((state) => {
+          state.data.authenticatedUser = user;
+        });
+      },
       auth: {
         initializeUser: async () => {
           try {
@@ -75,199 +81,342 @@ export const useStore = create<State, [["zustand/immer", never]]>(
         },
       },
       user: {
-        updateUser: async (userInfo) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.put(
-              `${ORIGIN}/api/users/${userId}`,
-              userInfo
+        getUserByUsername: async (username) => {
+          try {
+            const response = await axios.get(
+              `${ORIGIN}/api/users/username/${username}`
             );
             if (response.data.success) {
-              set((state) => {
-                state.data.authenticatedUser = response.data.user;
-              });
+              const { success, user, message } = response.data;
+              return { success, user, message };
+            } else {
+              return response.data;
             }
-            return response.data;
+          } catch (error) {
+            debug_mode && console.log(error);
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
+        },
+        updateUser: async (userInfo) => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/users/${userId}`,
+                userInfo
+              );
+              if (response.data.success) {
+                set((state) => {
+                  state.data.authenticatedUser = response.data.user;
+                });
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
         },
         followAUser: async (userIdToFollow) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.put(
-              `${ORIGIN}/api/users/follow/${get().data.authenticatedUser._id}`,
-              { userIdToFollow }
-            );
-            if (response.data.success) {
-              set((state) => {
-                state.data.authenticatedUser = response.data.user;
-              });
-              const { success, user, message } = response.data;
-              return { success, user, message };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const response = await axios.put(
+                `${ORIGIN}/api/users/follow/${
+                  get().data.authenticatedUser._id
+                }`,
+                { userIdToFollow }
+              );
+              if (response.data.success) {
+                set((state) => {
+                  state.data.authenticatedUser = response.data.user;
+                });
+                const { success, user, message } = response.data;
+                return { success, user, message };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         unfollowAUser: async (userIdToUnfollow) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.put(
-              `${ORIGIN}/api/users/unfollow/${
-                get().data.authenticatedUser._id
-              }`,
-              { userIdToUnfollow }
-            );
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const response = await axios.put(
+                `${ORIGIN}/api/users/unfollow/${
+                  get().data.authenticatedUser._id
+                }`,
+                { userIdToUnfollow }
+              );
+              if (response.data.success) {
+                set((state) => {
+                  state.data.authenticatedUser = response.data.user;
+                });
+                const { success, user, message } = response.data;
+                return { success, user, message };
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        getUserById: async (userId) => {
+          try {
+            const response = await axios.get(`${ORIGIN}/api/users/${userId}`);
             if (response.data.success) {
-              set((state) => {
-                state.data.authenticatedUser = response.data.user;
-              });
               const { success, user, message } = response.data;
               return { success, user, message };
             }
             return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
-        },
-        getUserById: async (userId) => {
-          const response = await axios.get(`${ORIGIN}/api/users/${userId}`);
-          if (response.data.success) {
-            const { success, user, message } = response.data;
-            return { success, user, message };
-          }
-          return response.data;
         },
         getUsersFollowers: async (userId) => {
-          const response = await axios.get(
-            `${ORIGIN}/api/users/followers/${userId}`
-          );
-          if (response.data.success) {
-            const { success, users, message } = response.data;
-            return { success, users, message };
+          try {
+            const response = await axios.get(
+              `${ORIGIN}/api/users/followers/${userId}`
+            );
+            if (response.data.success) {
+              const { success, users, message } = response.data;
+              return { success, users, message };
+            }
+            return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return response.data;
         },
         getUsersFollowing: async (userId) => {
-          const response = await axios.get(
-            `${ORIGIN}/api/users/followings/${userId}`
-          );
-          if (response.data.success) {
-            const { success, message, users } = response.data;
-            return { success, message, users };
+          try {
+            const response = await axios.get(
+              `${ORIGIN}/api/users/followings/${userId}`
+            );
+            if (response.data.success) {
+              const { success, message, users } = response.data;
+              return { success, message, users };
+            }
+            return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return response.data;
         },
         getSuggestedUsers: async () => {
-          const response = await axios.get(
-            `${ORIGIN}/api/users/users/suggestions`
-          );
-          if (response.data.success) {
-            const { success, message, users } = response.data;
-            return { success, message, users };
+          try {
+            const response = await axios.get(
+              `${ORIGIN}/api/users/users/suggestions`
+            );
+            if (response.data.success) {
+              const { success, message, users } = response.data;
+              return { success, message, users };
+            }
+            return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return response.data;
         },
         bookmarkAPost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.put(
-              `${ORIGIN}/api/users/bookmark/${
-                get().data.authenticatedUser._id
-              }`,
-              { postId }
-            );
-            if (response.data.success) {
-              set((state) => {
-                state.data.authenticatedUser = response.data.user;
-              });
-              const { success, message, post } = response.data;
-              return { success, message, post };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const response = await axios.put(
+                `${ORIGIN}/api/users/bookmark/${
+                  get().data.authenticatedUser._id
+                }`,
+                { postId }
+              );
+              if (response.data.success) {
+                set((state) => {
+                  state.data.authenticatedUser = response.data.user;
+                });
+                const { success, message, user } = response.data;
+                return { success, message, user };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         unbookmarkAPost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
 
-            const response = await axios.put(
-              `${ORIGIN}/api/users/unbookmark/${
-                get().data.authenticatedUser._id
-              }`,
-              { postId }
-            );
-            if (response.data.success) {
-              set((state) => {
-                state.data.authenticatedUser = response.data.user;
-              });
-              const { success, message, post } = response.data;
-              return { success, message, post };
+              const response = await axios.put(
+                `${ORIGIN}/api/users/unbookmark/${
+                  get().data.authenticatedUser._id
+                }`,
+                { postId }
+              );
+              if (response.data.success) {
+                set((state) => {
+                  state.data.authenticatedUser = response.data.user;
+                });
+                const { success, message, user } = response.data;
+                return { success, message, user };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
-        getUsersBookmarkedPosts: async (userId) => {
-          const storedToken = Cookies.get("token");
-
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.get(
-              `${ORIGIN}/api/users/bookmarked-posts/${userId}`
-            );
-            if (response.data.success) {
-              const { success, message, posts } = response.data;
-              return { success, message, posts };
+        getUsersBookmarkedPosts: async () => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.get(
+                `${ORIGIN}/api/users/bookmarked-posts/${userId}`
+              );
+              if (response.data.success) {
+                const { success, message, posts } = response.data;
+                return { success, message, posts };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
       },
       post: {
+        getNonPublishedPostsByUserId: async (userId) => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const response = await axios.get(
+                `${ORIGIN}/api/posts/unpublished/${userId}`
+              );
+              if (response.data.success) {
+                const { success, message, posts } = response.data;
+                return { success, message, posts };
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              errorType: AXIOS_ERROR,
+              error,
+            };
+          }
+        },
         updatePost: async (postInfo) => {
           try {
             const storedToken = Cookies.get("token");
@@ -303,171 +452,267 @@ export const useStore = create<State, [["zustand/immer", never]]>(
           }
         },
         publishPost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.put(
-              `${ORIGIN}/api/posts/publish/${postId}`
-            );
-            if (response.data.success) {
-              const { success, message, post } = response.data;
-              return { success, message, post };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/posts/publish/${postId}`,
+                { userId }
+              );
+              if (response.data.success) {
+                const { success, message, post } = response.data;
+                return { success, message, post };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         unPublishPost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.put(
-              `${ORIGIN}/api/posts/unpublish/${postId}`
-            );
-            if (response.data.success) {
-              const { success, message, post } = response.data;
-              return { success, message, post };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/posts/unpublish/${postId}`,
+                { userId }
+              );
+              if (response.data.success) {
+                const { success, message, post } = response.data;
+                return { success, message, post };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         getPostsByUserId: async (userId) => {
-          const response = await axios.get(
-            `${ORIGIN}/api/posts/user/${userId}`
-          );
-          if (response.data.success) {
-            const { success, message, posts } = response.data;
-            return { success, message, posts };
-          }
-          return response.data;
-        },
-        getPostsByTag: async (tag) => {
-          const response = await axios.get(`${ORIGIN}/api/posts/tag/${tag}`);
-          if (response.data.success) {
-            const { success, message, posts } = response.data;
-            return { success, message, posts };
-          }
-          return response.data;
-        },
-        deletePost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.delete(
-              `${ORIGIN}/api/posts/${postId}/${userId}`
-            );
-            if (response.data.success) {
-              const { success, message, post } = response.data;
-              return { success, message, post };
-            }
-            return response.data;
-          }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
-        },
-        getAllPosts: async () => {
-          const response = await axios.get(`${ORIGIN}/api/posts`);
-          if (response.data.success) {
-            const { success, message, posts } = response.data;
-            return { success, message, posts };
-          }
-          if (debug_mode) console.log({ res: response });
-
-          return response.data;
-        },
-        getPostById: async (postId) => {
-          const response = await axios.get(`${ORIGIN}/api/posts/${postId}`);
-          if (response.data.success) {
-            const { success, message, post } = response.data;
-            return { success, message, post };
-          }
-          return response.data;
-        },
-        likeAPost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.put(
-              `${ORIGIN}/api/posts/like/${postId}`,
-              { userId }
-            );
-            if (response.data.success) {
-              const { success, message, post } = response.data;
-              return { success, message, post };
-            }
-            return response.data;
-          }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
-        },
-        unlikeAPost: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.put(
-              `${ORIGIN}/api/posts/unlike/${postId}`,
-              { userId }
-            );
-            if (response.data.success) {
-              const { success, message, post } = response.data;
-              return { success, message, post };
-            }
-            return response.data;
-          }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
-        },
-        getUsersLikedPosts: async (userId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
+          try {
             const response = await axios.get(
-              `${ORIGIN}/api/posts/liked-posts/${userId}`
+              `${ORIGIN}/api/posts/user/${userId}`
             );
             if (response.data.success) {
               const { success, message, posts } = response.data;
               return { success, message, posts };
             }
             return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
+        },
+        getPostsByTag: async (tag) => {
+          try {
+            const response = await axios.get(`${ORIGIN}/api/posts/tag/${tag}`);
+            if (response.data.success) {
+              const { success, message, posts } = response.data;
+              return { success, message, posts };
+            }
+            return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        deletePost: async (postId) => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.delete(
+                `${ORIGIN}/api/posts/${postId}/${userId}`
+              );
+              if (response.data.success) {
+                const { success, message, post } = response.data;
+                return { success, message, post };
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        getAllPosts: async () => {
+          try {
+            const response = await axios.get(`${ORIGIN}/api/posts`);
+            if (response.data.success) {
+              const { success, message, posts } = response.data;
+              return { success, message, posts };
+            }
+            if (debug_mode) console.log({ res: response });
+
+            return response.data;
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        getPostById: async (postId) => {
+          try {
+            const response = await axios.get(`${ORIGIN}/api/posts/${postId}`);
+            if (response.data.success) {
+              const { success, message, post } = response.data;
+              return { success, message, post };
+            }
+            return response.data;
+          } catch (error) {
+            debug_mode && console.log(error);
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        likeAPost: async (postId) => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/posts/like/${postId}`,
+                { userId }
+              );
+              if (response.data.success) {
+                const { success, message, post } = response.data;
+                return { success, message, post };
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        unlikeAPost: async (postId) => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/posts/unlike/${postId}`,
+                { userId }
+              );
+              if (response.data.success) {
+                const { success, message, post } = response.data;
+                return { success, message, post };
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
+        },
+        getUsersLikedPosts: async () => {
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.get(
+                `${ORIGIN}/api/posts/liked-posts/${userId}`
+              );
+              if (response.data.success) {
+                const { success, message, posts } = response.data;
+                return { success, message, posts };
+              }
+              return response.data;
+            }
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
         },
 
         // dump ==============================
@@ -517,140 +762,194 @@ export const useStore = create<State, [["zustand/immer", never]]>(
       },
       comment: {
         createComment: async (commentInfo) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const authorId = get().data.authenticatedUser._id;
-            const response = await axios.post(`${ORIGIN}/api/comments`, {
-              authorId,
-              ...commentInfo,
-            });
-            if (response.data.success) {
-              const { success, message, comment } = response.data;
-              return { success, message, comment };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const authorId = get().data.authenticatedUser._id;
+              const response = await axios.post(`${ORIGIN}/api/comments`, {
+                authorId,
+                ...commentInfo,
+              });
+              if (response.data.success) {
+                const { success, message, comment } = response.data;
+                return { success, message, comment };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         deleteComment: async (commentId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.delete(
-              `${ORIGIN}/api/comments/${commentId}/${userId}`
-            );
-            if (response.data.success) {
-              const { success, message, comment } = response.data;
-              return { success, message, comment };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.delete(
+                `${ORIGIN}/api/comments/${commentId}/${userId}`
+              );
+              if (response.data.success) {
+                const { success, message, comment } = response.data;
+                return { success, message, comment };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         updateComment: async (commentInfo) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const { commentId, content } = commentInfo;
-            const response = await axios.put(
-              `${ORIGIN}/api/comments/${commentId}`,
-              { userId, content }
-            );
-            if (response.data.success) {
-              const { success, message, comment } = response.data;
-              return { success, message, comment };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const { commentId, content } = commentInfo;
+              const response = await axios.put(
+                `${ORIGIN}/api/comments/${commentId}`,
+                { userId, content }
+              );
+              if (response.data.success) {
+                const { success, message, comment } = response.data;
+                return { success, message, comment };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         likeAComment: async (commentId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.put(
-              `${ORIGIN}/api/comments/like/${commentId}`,
-              { userId }
-            );
-            if (response.data.success) {
-              const { success, message, comment } = response.data;
-              return { success, message, comment };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/comments/like/${commentId}`,
+                { userId }
+              );
+              if (response.data.success) {
+                const { success, message, comment } = response.data;
+                return { success, message, comment };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         unlikeAComment: async (commentId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const userId = get().data.authenticatedUser._id;
-            const response = await axios.put(
-              `${ORIGIN}/api/comments/unlike/${commentId}`,
-              { userId }
-            );
-            if (response.data.success) {
-              const { success, message, comment } = response.data;
-              return { success, message, comment };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const userId = get().data.authenticatedUser._id;
+              const response = await axios.put(
+                `${ORIGIN}/api/comments/unlike/${commentId}`,
+                { userId }
+              );
+              if (response.data.success) {
+                const { success, message, comment } = response.data;
+                return { success, message, comment };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
         getPostComments: async (postId) => {
-          const storedToken = Cookies.get("token");
-          if (storedToken) {
-            axios.defaults.headers.common[
-              "Authorization"
-            ] = `Bearer ${storedToken}`;
-            const response = await axios.get(
-              `${ORIGIN}/api/comments/post/${postId}`
-            );
-            if (response.data.success) {
-              const { success, message, comments } = response.data;
-              return { success, message, comments };
+          try {
+            const storedToken = Cookies.get("token");
+            if (storedToken) {
+              axios.defaults.headers.common[
+                "Authorization"
+              ] = `Bearer ${storedToken}`;
+              const response = await axios.get(
+                `${ORIGIN}/api/comments/post/${postId}`
+              );
+              if (response.data.success) {
+                const { success, message, comments } = response.data;
+                return { success, message, comments };
+              }
+              return response.data;
             }
-            return response.data;
+            return {
+              success: false,
+              message: "Token not found",
+              errorType: INTERNAL_SERVER_ERROR,
+            };
+          } catch (error) {
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
           }
-          return {
-            success: false,
-            message: "Token not found",
-            errorType: INTERNAL_SERVER_ERROR,
-          };
         },
       },
     },

@@ -5,6 +5,7 @@ import BigLogo from "../primary/BigLogo";
 import { useStore } from "@/store/useStore";
 import { defaultUserPic } from "@/constants";
 import PopoverMoreIcon from "./PopoverMoreIcon";
+import AccountMenu from "./AccountMenu";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Navbar = () => {
         >
           <div className={`flex w-full justify-between px-10 sm:px-0`}>
             <BigLogo className={""} />
-            <div className="flex flex-row items-center justify-center space-x-10 text-black sm:space-x-5">
+            <div className="flex flex-row items-center justify-center space-x-10 text-black sm:space-x-5 text-[15px]">
               <a
                 href="https://linkedin.com/in/dev-bilaspure"
                 target="_blank"
@@ -56,34 +57,7 @@ const Navbar = () => {
                 </button>
               )}
               {authenticatedUser && (
-                <PopoverMoreIcon
-                  buttonElement={
-                    <div
-                      className="h-10 w-10 cursor-pointer rounded-full bg-cover"
-                      style={{
-                        backgroundImage: `url(${
-                          authenticatedUser.profilePicture || defaultUserPic
-                        })`,
-                      }}
-                    ></div>
-                  }
-                  element={
-                    <div className="px-5 py-1 ">
-                      <Button
-                        onClick={() => logoutUser()}
-                        variant="text"
-                        color="inherit"
-                        style={{
-                          padding: 0,
-                          minWidth: 0,
-                          backgroundColor: "#FFFFFF",
-                        }}
-                      >
-                        Logout
-                      </Button>
-                    </div>
-                  }
-                />
+                <AccountMenu />
               )}
             </div>
           </div>
