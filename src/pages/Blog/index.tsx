@@ -95,15 +95,17 @@ const Blog = (props) => {
     if (authenticatedUser._id === post?.authorId) return;
     try {
       if (isFollowing) {
+        setIsFollowing(false);
         const response = await unfollowAUser(post.authorInfo._id);
         if (response.success) {
-          setIsFollowing(false);
+          debug_mode && console.log("unfollowed successfully");
         }
         debug_mode && console.log(response);
       } else {
+        setIsFollowing(true);
         const response = await followAUser(post.authorInfo._id);
         if (response.success) {
-          setIsFollowing(true);
+          debug_mode && console.log("followed successfully");
         }
         debug_mode && console.log(response);
       }
@@ -168,7 +170,7 @@ const Blog = (props) => {
               </div>
               <div className="flex text-[13px] font-medium text-[#757575]">
                 {getTimeAgo(post?.createdAt)}{" "}
-                  <div className="h-[2px] w-[2.5px] bg-[#757575] ml-[7px] mt-[9px]"></div>
+                <div className="ml-[7px] mt-[9px] h-[2px] w-[2.5px] bg-[#757575]"></div>
                 <span className="ml-[7px]  font-medium text-[#757575]">{`${post.views} views`}</span>
               </div>
             </div>

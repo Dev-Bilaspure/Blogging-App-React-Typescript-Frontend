@@ -33,15 +33,17 @@ const RightBar = ({ user, isFetchingUser }) => {
     if (authenticatedUser._id === user._id) return;
     try {
       if (isFollowings) {
+        setIsFollowings(false);
         const response = await unfollowAUser(user._id);
         if (response.success) {
-          setIsFollowings(false);
+          debug_mode && console.log("unfollowed successfully");
         }
         debug_mode && console.log(response);
       } else {
+        setIsFollowings(true);
         const response = await followAUser(user._id);
         if (response.success) {
-          setIsFollowings(true);
+          debug_mode && console.log("followed successfully");
         }
         debug_mode && console.log(response);
       }
@@ -61,7 +63,9 @@ const RightBar = ({ user, isFetchingUser }) => {
             className={`flex h-[90px] w-[90px] justify-center rounded-full bg-cover sm:h-[75px] sm:w-[75px]`}
             style={{
               backgroundImage: `url("${
-                user && user.profilePicture?.length > 0 ? user.profilePicture : defaultUserPic
+                user && user.profilePicture?.length > 0
+                  ? user.profilePicture
+                  : defaultUserPic
               }")`,
               backgroundSize: "cover",
               backgroundPosition: "center",

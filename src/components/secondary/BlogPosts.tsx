@@ -164,10 +164,11 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
     }
     try {
       if (isLiked) {
+        setIsLiked(false);
         const response = await unlikeAPost(post._id);
         if (response.success) {
           setUnlikedPostSuccess(true);
-          setIsLiked(false);
+          debug_mode && console.log('post unliked successfully');
           setLikesCount(likesCount - 1);
           if (pathname === "/me/liked" && props.onPostUnLiked) {
             props.onPostUnLiked(post._id);
@@ -175,11 +176,12 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
         }
         debug_mode && console.log(response);
       } else {
+        setIsLiked(true);
         const response = await likeAPost(post._id);
         if (response.success) {
           setLikedPostSuccess(true);
-          setIsLiked(true);
           setLikesCount(likesCount + 1);
+          debug_mode && console.log('post liked successfully');
         }
         debug_mode && console.log(response);
       }
@@ -195,20 +197,22 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
     }
     try {
       if (isBookmarked) {
+        setIsBookmarked(false);
         const response = await unbookmarkAPost(post._id);
         if (response.success) {
+          debug_mode && console.log('unbookmarked successfully')
           setUnbookmarkedPostSuccess(true);
-          setIsBookmarked(false);
           if (pathname === "/me/bookmarks" && props.onPostUnBookmarked) {
             props.onPostUnBookmarked(post._id);
           }
         }
         debug_mode && console.log(response);
       } else {
+        setIsBookmarked(true);
         const response = await bookmarkAPost(post._id);
         if (response.success) {
+          debug_mode && console.log('bookmarked successfully')
           setBookmarkedPostSuccess(true);
-          setIsBookmarked(true);
         }
         debug_mode && console.log(response);
       }
@@ -241,13 +245,13 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
               <span className="ml-[7px]">
                 <div className="h-[2.5px] w-[2.5px] bg-[#757575]"></div>
               </span>
-              <span className="ml-[7px] text-[14px] font-medium text-[#757575]">
+              <span className="ml-[7px] text-[14px] font-medium text-[#757575] sm:text-[12px]">
                 {getTimeAgo(post.createdAt)}
               </span>
               <span className="ml-[7px]">
                 <div className="h-[2.5px] w-[2.3px] bg-[#757575]"></div>
               </span>
-              <span className="ml-[7px] text-[14px] font-medium text-[#757575]">{`${post.views} views`}</span>
+              <span className="ml-[7px] text-[14px] font-medium text-[#757575] sm:text-[12px]">{`${post.views} views`}</span>
             </p>
           </Link>
         </div>

@@ -98,16 +98,18 @@ const Post = ({ post, user, setPosts }) => {
     }
     try {
       if (isLiked) {
+        setIsLiked(false);
         const response = await unlikeAPost(post._id);
         if (response.success) {
-          setIsLiked(false);
           setLikesCount(likesCount - 1);
+          debug_mode && console.log("unliked successfully");
         }
         debug_mode && console.log(response);
       } else {
+        setIsLiked(true);
         const response = await likeAPost(post._id);
         if (response.success) {
-          setIsLiked(true);
+          debug_mode && console.log("liked successfully");
           setLikesCount(likesCount + 1);
         }
         debug_mode && console.log(response);
@@ -124,15 +126,17 @@ const Post = ({ post, user, setPosts }) => {
     }
     try {
       if (isBookmarked) {
+        setIsBookmarked(false);
         const response = await unbookmarkAPost(post._id);
         if (response.success) {
-          setIsBookmarked(false);
+          debug_mode && console.log("unbookmarked successfully");
         }
         debug_mode && console.log(response);
       } else {
+        setIsBookmarked(true);
         const response = await bookmarkAPost(post._id);
         if (response.success) {
-          setIsBookmarked(true);
+          debug_mode && console.log("bookmarked successfully");
         }
         debug_mode && console.log(response);
       }
