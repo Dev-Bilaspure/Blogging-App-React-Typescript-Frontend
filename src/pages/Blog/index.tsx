@@ -36,18 +36,19 @@ const Blog = (props) => {
   } = useStore();
 
   useEffect(() => {
+    if (!post?.authorId) return;
     (async () => {
       try {
         const response = await getUserById(post.authorId);
         if (response.success) {
           setPostsAuthor(response.user);
         }
-        debug_mode && console.log(response);
+        console.log(response);
       } catch (error) {
-        debug_mode && console.log(error);
+        console.log(error);
       }
     })();
-  }, []);
+  }, [post]);
 
   useEffect(() => {
     if (!postId) return;
@@ -86,6 +87,31 @@ const Blog = (props) => {
     })();
   }, []);
 
+  const handleFollowButtonClick = async () => {
+    if (!authenticatedUser) {
+      navigate("/login");
+      return;
+    }
+    if (authenticatedUser._id === post?.authorId) return;
+    try {
+      if (isFollowing) {
+        const response = await unfollowAUser(post.authorInfo._id);
+        if (response.success) {
+          setIsFollowing(false);
+        }
+        debug_mode && console.log(response);
+      } else {
+        const response = await followAUser(post.authorInfo._id);
+        if (response.success) {
+          setIsFollowing(true);
+        }
+        debug_mode && console.log(response);
+      }
+    } catch (error) {
+      debug_mode && console.log(error);
+    }
+  };
+
   return isFetching ? (
     <div className="mt-40 flex justify-center sm:mt-[100px]">
       <FetchingDataLoader />
@@ -117,54 +143,35 @@ const Blog = (props) => {
                 className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover sm:h-[40px] sm:w-[40px]"
               />
             </Link>
-            <div className="item-center flex cursor-pointer flex-col justify-center space-y-1">
-              <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
-                <p className="text-[14px]">
-                  {`${post?.authorInfo?.firstName} ${post?.authorInfo?.lastName}`}
-                </p>
-              </Link>
-              <p className="text-[13px] font-medium text-[#757575]">
-                {getTimeAgo(post?.createdAt)}
-              </p>
+            <div className="item-center flex cursor-pointer flex-col justify-center space-y-[5px]">
+              <div className="flex space-x-5">
+                <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
+                  <p className="text-[14px]">
+                    {`${post?.authorInfo?.firstName} ${post?.authorInfo?.lastName}`}
+                  </p>
+                </Link>
+                <Button
+                  variant="text"
+                  color="success"
+                  style={{
+                    padding: 0,
+                    minWidth: 0,
+                    textTransform: "none",
+                    height: 21,
+                  }}
+                  onClick={handleFollowButtonClick}
+                >
+                  <p className="text-[14px] font-medium">
+                    {isFollowing ? "Following" : "Follow"}
+                  </p>
+                </Button>
+              </div>
+              <div className="flex text-[13px] font-medium text-[#757575]">
+                {getTimeAgo(post?.createdAt)}{" "}
+                  <div className="h-[2px] w-[2.5px] bg-[#757575] ml-[7px] mt-[9px]"></div>
+                <span className="ml-[7px]  font-medium text-[#757575]">{`${post.views} views`}</span>
+              </div>
             </div>
-            <Button
-              variant="text"
-              color="success"
-              style={{
-                padding: 0,
-                minWidth: 0,
-                textTransform: "none",
-                height: "fit-content",
-              }}
-              onClick={async () => {
-                if (!authenticatedUser) {
-                  navigate("/login");
-                  return;
-                }
-                if (authenticatedUser._id === post?.authorId) return;
-                try {
-                  if (isFollowing) {
-                    const response = await unfollowAUser(post.authorInfo._id);
-                    if (response.success) {
-                      setIsFollowing(false);
-                    }
-                    debug_mode && console.log(response);
-                  } else {
-                    const response = await followAUser(post.authorInfo._id);
-                    if (response.success) {
-                      setIsFollowing(true);
-                    }
-                    debug_mode && console.log(response);
-                  }
-                } catch (error) {
-                  debug_mode && console.log(error);
-                }
-              }}
-            >
-              <p className="text-[14px] font-medium">
-                {isFollowing ? "Following" : "Follow"}
-              </p>
-            </Button>
           </div>
         </div>
         <div className="mt-2 h-[45px] w-full border-b-2 border-t-2 border-[#F2F2F2] border-[#F2F2F2] sm:h-[40px]">

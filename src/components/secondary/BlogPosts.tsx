@@ -62,7 +62,7 @@ const BlogPosts = ({ posts, setPosts, noPostsMessage, ...props }) => {
   return (
     <div
       className={twMerge(
-        `flex flex-col space-y-[40px] sm:space-y-[30px] sm:border-b sm:border-gray pb-10`,
+        `flex flex-col space-y-[40px] pb-10 sm:space-y-[30px] sm:border-b sm:border-gray`,
         props.className
       )}
     >
@@ -223,7 +223,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
       authenticatedUser.followings.includes(post.authorId)) && (
       <div className={twMerge("", props.className)}>
         <div className="mb-[2px] flex flex-row space-x-2">
-          <Link to={`/${postsAuthor ? postsAuthor.username : ''}`}>
+          <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
             <img
               src={
                 postsAuthor
@@ -235,11 +235,19 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
               className="h-[24px] w-[24px] cursor-pointer rounded-lg object-cover"
             />
           </Link>
-          <Link to={`/${postsAuthor ? postsAuthor.username : ''}`}>
-            <p className="mt-[2px] flex cursor-pointer flex-row items-center justify-center text-[13px] sm:text-[12px]">
+          <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
+            <p className="mt-[2px] flex cursor-pointer flex-row items-center justify-center text-[14px] font-medium sm:text-[12px]">
               {post.authorInfo.firstName + " " + post.authorInfo.lastName}
-              <span className="ml-2">-</span>
-              <span className="ml-2 text-[#757575] font-medium text-[12px]">{getTimeAgo(post.createdAt)}</span>
+              <span className="ml-[7px]">
+                <div className="h-[2px] w-[2.5px] bg-[#757575]"></div>
+              </span>
+              <span className="ml-[7px] text-[14px] font-medium text-[#757575]">
+                {getTimeAgo(post.createdAt)}
+              </span>
+              <span className="ml-[7px]">
+                <div className="h-[2px] w-[2.5px] bg-[#757575]"></div>
+              </span>
+              <span className="ml-[7px] text-[14px] font-medium text-[#757575]">{`${post.views} views`}</span>
             </p>
           </Link>
         </div>

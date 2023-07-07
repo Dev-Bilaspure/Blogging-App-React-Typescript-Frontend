@@ -142,9 +142,11 @@ const Post = ({ post, user, setPosts }) => {
   };
   return (
     <div>
-      <p className="font-sans text-[13px] font-medium text-[#757575] sm:text-[12px]">
+      <div className="flex font-sans text-[13px] font-medium text-[#757575] sm:text-[12px]">
         {getTimeAgo(post?.createdAt)}
-      </p>
+        <div className="ml-[7px] mt-[9px] h-[2px] w-[2.5px] bg-[#757575]"></div>
+        <span className="ml-[7px]  font-medium text-[#757575]">{`${post.views} views`}</span>
+      </div>
       <div className="flex max-h-[126px] min-h-[126px] space-x-10 md:space-x-7 sm:space-x-4">
         <div
           className={`flex ${

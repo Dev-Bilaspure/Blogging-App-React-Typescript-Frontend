@@ -98,14 +98,14 @@ const MyStories = () => {
           <p className="item-center flex justify-center font-outfit text-[40px] sm:text-[28px]">
             Your stories
           </p>
-          <div className="pt-[17px] sm:pt-[10px] h-[50px] sm:h-[35px]">
+          <div className="h-[50px] pt-[17px] sm:h-[35px] sm:pt-[10px]">
             <Button
               variant="contained"
               color="success"
               style={{
                 textTransform: "none",
                 borderRadius: 50,
-                height: '100%',
+                height: "100%",
                 padding: 12,
                 boxShadow: "none",
               }}
@@ -192,7 +192,7 @@ const MyStories = () => {
         <div className="mt-10 flex flex-col pt-[20px]">
           <TagsTabs />
           <div className="mt-5">
-          <Suggestions />
+            <Suggestions />
           </div>
         </div>
       </div>
@@ -234,9 +234,11 @@ const Post = ({ post, setPosts, tabValue }) => {
 
   return (
     <div>
-      <p className="font-sans text-[13px] font-medium text-[#757575] sm:text-[12px]">
+      <div className="flex font-sans text-[13px] font-medium text-[#757575] sm:text-[12px]">
         {getTimeAgo(post?.createdAt)}
-      </p>
+        <div className="ml-[7px] mt-[9px] h-[2px] w-[2.5px] bg-[#757575]"></div>
+        <span className="ml-[7px]  font-medium text-[#757575]">{`${post.views} views`}</span>
+      </div>
       <div className="flex max-h-[126px] min-h-[126px] space-x-10 md:space-x-7 sm:space-x-4">
         <div
           className={`flex ${
@@ -268,7 +270,11 @@ const Post = ({ post, setPosts, tabValue }) => {
             </div>
             {authenticatedUser && authenticatedUser._id === post.authorId && (
               <div className="item-center flex cursor-pointer justify-center">
-                <BlogOptionsMenu postId={post._id} setPosts={setPosts} post={post}/>
+                <BlogOptionsMenu
+                  postId={post._id}
+                  setPosts={setPosts}
+                  post={post}
+                />
               </div>
             )}
           </div>
