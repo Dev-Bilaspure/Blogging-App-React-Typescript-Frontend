@@ -33,17 +33,17 @@ const RightBar = ({ user, isFetchingUser }) => {
     if (authenticatedUser._id === user._id) return;
     try {
       if (isFollowings) {
-        setIsFollowings(false);
         const response = await unfollowAUser(user._id);
         if (response.success) {
           debug_mode && console.log("unfollowed successfully");
+          setIsFollowings(false);
         }
         debug_mode && console.log(response);
       } else {
-        setIsFollowings(true);
         const response = await followAUser(user._id);
         if (response.success) {
           debug_mode && console.log("followed successfully");
+          setIsFollowings(true);
         }
         debug_mode && console.log(response);
       }

@@ -151,9 +151,9 @@ const UserFF = ({ ffUser, setffUsers }) => {
     }
     try {
       if (isFollowing) {
-        setIsFollowing(false);
         const response = await unfollowAUser(ffUser._id);
         if (response.success) {
+          setIsFollowing(false);
           setffUsers((prevffUsers) => {
             return prevffUsers.map((prevffUser) => {
               if (prevffUser._id === ffUser._id) {

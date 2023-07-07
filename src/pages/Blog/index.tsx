@@ -95,17 +95,17 @@ const Blog = (props) => {
     if (authenticatedUser._id === post?.authorId) return;
     try {
       if (isFollowing) {
-        setIsFollowing(false);
         const response = await unfollowAUser(post.authorInfo._id);
         if (response.success) {
           debug_mode && console.log("unfollowed successfully");
+          setIsFollowing(false);
         }
         debug_mode && console.log(response);
       } else {
-        setIsFollowing(true);
         const response = await followAUser(post.authorInfo._id);
         if (response.success) {
           debug_mode && console.log("followed successfully");
+          setIsFollowing(true);
         }
         debug_mode && console.log(response);
       }

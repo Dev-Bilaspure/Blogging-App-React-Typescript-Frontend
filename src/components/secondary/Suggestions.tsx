@@ -75,17 +75,17 @@ const Suggestion = ({ user }) => {
     }
     try {
       if (isFollowing) {
-        setIsFollowing(false);
         const response = await unfollowAUser(user._id);
         if (response.success) {
           debug_mode && console.log("unfollowed successfully");
+          setIsFollowing(false);
         }
         debug_mode && console.log(response);
       } else {
-        setIsFollowing(true);
         const response = await followAUser(user._id);
         if (response.success) {
           debug_mode && console.log("followed successfully");
+          setIsFollowing(true);
         }
         debug_mode && console.log(response);
       }
