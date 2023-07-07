@@ -241,7 +241,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
           </Link>
           <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
             <p className="mt-[2px] flex cursor-pointer flex-row items-center justify-center text-[14px] font-medium sm:text-[12px]">
-              {post.authorInfo.firstName + " " + post.authorInfo.lastName}
+              {postsAuthor.firstName + " " + postsAuthor.lastName}
               <span className="ml-[7px]">
                 <div className="h-[2.5px] w-[2.5px] bg-[#757575]"></div>
               </span>

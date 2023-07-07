@@ -42,6 +42,10 @@ const Blog = (props) => {
         const response = await getUserById(post.authorId);
         if (response.success) {
           setPostsAuthor(response.user);
+          setIsFollowing(
+            authenticatedUser &&
+              response.user.followers.includes(authenticatedUser._id)
+          );
         }
         console.log(response);
       } catch (error) {
@@ -69,10 +73,7 @@ const Blog = (props) => {
             return;
           }
           setPost(response.post);
-          setIsFollowing(
-            authenticatedUser &&
-              response.post.authorInfo.followers.includes(authenticatedUser._id)
-          );
+          
         } else {
           const errorType = response?.error?.response?.data?.errorType;
           if (errorType === RESOURCE_NOT_FOUND) {
@@ -95,14 +96,14 @@ const Blog = (props) => {
     if (authenticatedUser._id === post?.authorId) return;
     try {
       if (isFollowing) {
-        const response = await unfollowAUser(post.authorInfo._id);
+        const response = await unfollowAUser(post.authorId);
         if (response.success) {
           debug_mode && console.log("unfollowed successfully");
           setIsFollowing(false);
         }
         debug_mode && console.log(response);
       } else {
-        const response = await followAUser(post.authorInfo._id);
+        const response = await followAUser(post.authorId);
         if (response.success) {
           debug_mode && console.log("followed successfully");
           setIsFollowing(true);
