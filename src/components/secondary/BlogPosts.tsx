@@ -62,7 +62,7 @@ const BlogPosts = ({ posts, setPosts, noPostsMessage, ...props }) => {
   return (
     <div
       className={twMerge(
-        `flex flex-col space-y-[40px] sm:space-y-[30px] border-b border-gray pb-10`,
+        `flex flex-col space-y-[40px] sm:space-y-[30px] sm:border-b sm:border-gray pb-10`,
         props.className
       )}
     >
@@ -239,7 +239,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
             <p className="mt-[2px] flex cursor-pointer flex-row items-center justify-center text-[13px] sm:text-[12px]">
               {post.authorInfo.firstName + " " + post.authorInfo.lastName}
               <span className="ml-2">-</span>
-              <span className="ml-2">{getTimeAgo(post.createdAt)}</span>
+              <span className="ml-2 text-[#757575] font-medium text-[12px]">{getTimeAgo(post.createdAt)}</span>
             </p>
           </Link>
         </div>

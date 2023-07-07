@@ -9,6 +9,7 @@ import BlogPosts from "@/components/secondary/BlogPosts";
 import axios from "axios";
 import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
 import WritingTips from "@/components/secondary/ShortCards/WritingTips";
+import SEO from "@/components/primary/SEO";
 
 const LikedPosts = () => {
   const [posts, setPosts] = useState<any>([]);
@@ -39,6 +40,7 @@ const LikedPosts = () => {
 
   return (
     <div className={`flex  w-full flex-row sm:flex-col`}>
+      <SEO options={{ title: "Liked" }} />
       <div className=" w-2/3 px-[100px] py-10 md:px-20 sm:w-full sm:px-5  ">
         <div className={` flex h-fit space-x-3  ${!authenticatedUser ? 'pb-10 sm:pb-5 border-b border-[#E6E6E6] mb-10' : " mb-5"}`}>
           <div className="h-[45px] w-[45px] rounded-full bg-[#E6E6E6] text-[27px] sm:h-[33px] sm:w-[33px] sm:text-[20px]">

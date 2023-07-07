@@ -1,3 +1,4 @@
+import SEO from "@/components/primary/SEO";
 import React from "react";
 import { Link } from "react-router-dom";
 import { twMerge } from "tailwind-merge";
@@ -11,6 +12,7 @@ const UnauthorizedAccess = (props) => {
         props.className
       )}
     >
+      <SEO options={{ title: "401 - Unauthorized Access" }} />
       <div className="w-1/2 md:w-2/3 sm:w-full">
         <p className="text-[16px] uppercase sm:text-center sm:text-[14px]">
           Unauthorized Access

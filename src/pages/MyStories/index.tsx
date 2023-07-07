@@ -10,6 +10,7 @@ import _, { set } from "lodash";
 import BlogOptionsMenu from "@/components/secondary/BlogOptionMenu";
 import { debug_mode } from "@/debug-controller";
 import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
+import SEO from "@/components/primary/SEO";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -91,6 +92,7 @@ const MyStories = () => {
   }, []);
   return (
     <div className="flex w-full flex-row  sm:flex-col sm:space-y-10">
+      <SEO options={{ title: "Your Stories" }} />
       <div className="mt-7 w-2/3 px-[100px] pt-[20px] md:px-[40px] sm:w-full sm:px-5 ">
         <div className="flex h-fit space-x-10 ">
           <p className="item-center flex justify-center font-outfit text-[40px] sm:text-[28px]">
@@ -123,12 +125,12 @@ const MyStories = () => {
               indicatorColor="primary"
             >
               <Tab
-                label="Published"
+                label={`Published (${publishedPosts?.length || 0})`}
                 style={{ textTransform: "none" }}
                 {...a11yProps(0)}
               />
               <Tab
-                label="Drafs"
+                label={`Drafts (${draftPosts?.length || 0})`}
                 style={{ textTransform: "none" }}
                 {...a11yProps(1)}
               />
@@ -189,7 +191,9 @@ const MyStories = () => {
       <div className="h-screen w-1/3 space-y-5 border-l border-gray px-10 pl-10 sm:w-full sm:border-none sm:px-5">
         <div className="mt-10 flex flex-col pt-[20px]">
           <TagsTabs />
+          <div className="mt-5">
           <Suggestions />
+          </div>
         </div>
       </div>
     </div>

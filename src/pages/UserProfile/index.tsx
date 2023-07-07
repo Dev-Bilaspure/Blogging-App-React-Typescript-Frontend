@@ -15,6 +15,7 @@ import { isValidObjectId } from "@/utils/helperMethods";
 import { INTERNAL_SERVER_ERROR, RESOURCE_NOT_FOUND } from "@/utils/errorTypes";
 import NotFound from "../NotFound";
 import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
+import SEO from "@/components/primary/SEO";
 
 const UserProfile = (props) => {
   const [isResourceNotFound, setIsResourceNotFound] = useState(false);
@@ -56,6 +57,7 @@ const UserProfile = (props) => {
     <NotFound />
   ) : (
     <div className={twMerge(`mb-20 w-full`, props.className)}>
+      <SEO options={{ title: user.firstName + " " + user.lastName }} />
       <div className="flex min-h-screen w-full flex-row sm:flex-col sm:space-y-10">
         <div className="w-2/3 overflow-y-auto px-[120px] pt-[50px] md:px-[50px] sm:w-full sm:px-5">
           {isFetchingUser ? (

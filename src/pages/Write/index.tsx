@@ -23,6 +23,7 @@ import UnauthorizedAccess from "../UnauthorizedAccess";
 import StatusSnackbar from "@/components/secondary/StatusSnackbar";
 import { isValidObjectId } from "@/utils/helperMethods";
 import { SERVER_ORIGIN } from "@/constants";
+import SEO from "@/components/primary/SEO";
 
 const Write = (props) => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -182,6 +183,7 @@ const Write = (props) => {
     <UnauthorizedAccess />
   ) : (
     <div>
+      <SEO options={{ title: "Write" }} />
       <div
         className={twMerge(
           "mb-20 flex justify-center pt-10 sm:px-5 sm:pt-5",

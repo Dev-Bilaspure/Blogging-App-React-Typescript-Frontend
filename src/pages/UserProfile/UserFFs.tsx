@@ -13,7 +13,6 @@ import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
 
 const UserFFs = (props) => {
   const { pathname } = useLocation();
-  console.log(pathname.split("/"));
   const [isFetchingFFUsers, setIsFetchingFFUsers] = useState(false);
 
   const [isResourceNotFound, setIsResourceNotFound] = useState(false);

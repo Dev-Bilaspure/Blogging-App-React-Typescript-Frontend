@@ -15,6 +15,7 @@ import { getTimeAgo, isValidObjectId } from "@/utils/helperMethods";
 import { INTERNAL_SERVER_ERROR, RESOURCE_NOT_FOUND } from "@/utils/errorTypes";
 import _ from "lodash";
 import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
+import SEO from "@/components/primary/SEO";
 
 const Blog = (props) => {
   const [post, setPost] = useState<any>({});
@@ -22,24 +23,39 @@ const Blog = (props) => {
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const { postId } = useParams();
+  const [postsAuthor, setPostsAuthor] = useState<any>(null);
 
   const navigate = useNavigate();
 
   const {
     data: { authenticatedUser },
     actions: {
-      user: { unfollowAUser, followAUser },
+      user: { unfollowAUser, followAUser, getUserById },
       post: { getPostById },
     },
   } = useStore();
 
   useEffect(() => {
+    (async () => {
+      try {
+        const response = await getUserById(post.authorId);
+        if (response.success) {
+          setPostsAuthor(response.user);
+        }
+        debug_mode && console.log(response);
+      } catch (error) {
+        debug_mode && console.log(error);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
     if (!postId) return;
     setIsFetching(true);
-    if(!isValidObjectId(postId)) {
-    setIsResourceNotFound(true);
-    setIsFetching(false);
-    return;
+    if (!isValidObjectId(postId)) {
+      setIsResourceNotFound(true);
+      setIsFetching(false);
+      return;
     }
     (async () => {
       try {
@@ -71,7 +87,7 @@ const Blog = (props) => {
   }, []);
 
   return isFetching ? (
-    <div className="flex justify-center mt-40 sm:mt-[100px]">
+    <div className="mt-40 flex justify-center sm:mt-[100px]">
       <FetchingDataLoader />
     </div>
   ) : isResourceNotFound ? (
@@ -80,6 +96,7 @@ const Blog = (props) => {
     <div
       className={twMerge("flex justify-center pt-10 sm:px-5", props.className)}
     >
+      <SEO options={{ title: post.title }} />
       <div className="w-1/2 lg:w-3/4 xs:w-full">
         <p className="font-merriWeather text-[40px] font-bold leading-tight text-[#373737] lg:text-[40px] md:text-[35px] sm:text-[28px] sm:leading-9">
           {post?.title}
@@ -90,14 +107,18 @@ const Blog = (props) => {
         />
         <div className="mt-10 pb-10 sm:pb-5">
           <div className="flex h-[42px] space-x-3 ">
-            <Link to={`/${post.authorId}`}>
+            <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
               <img
-                src={post?.authorInfo?.profilePicture || defaultUserPic}
+                src={
+                  postsAuthor && postsAuthor.profilePicture?.length > 0
+                    ? postsAuthor.profilePicture
+                    : defaultUserPic
+                }
                 className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover sm:h-[40px] sm:w-[40px]"
               />
             </Link>
             <div className="item-center flex cursor-pointer flex-col justify-center space-y-1">
-              <Link to={`/${post.authorId}`}>
+              <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
                 <p className="text-[14px]">
                   {`${post?.authorInfo?.firstName} ${post?.authorInfo?.lastName}`}
                 </p>

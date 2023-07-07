@@ -10,6 +10,7 @@ import { debug_mode } from "@/debug-controller";
 import FetchingDataLoader from "@/components/primary/FetchingDataLoader";
 import { Link, useNavigate } from "react-router-dom";
 import WritingTips from "@/components/secondary/ShortCards/WritingTips";
+import SEO from "@/components/primary/SEO";
 
 const Home = (props) => {
   const {
@@ -41,9 +42,10 @@ const Home = (props) => {
 
   return (
     <div className={twMerge(`mb-20 w-full`, props.className)}>
+      <SEO options={{ title: "Maadhyam" }} />
       <HomeBanner className={`${authenticatedUser ? "hidden" : "block"}`} />
       <div className="flex w-full flex-row  sm:flex-col sm:space-y-10 mb-40">
-        <div className="w-2/3 px-[100px] pt-[20px] sm:pt-0 md:px-[40px] sm:w-full sm:px-5">
+        <div className="w-2/3 px-[100px] pt-[0px] sm:pt-0 md:px-[40px] sm:w-full sm:px-5">
           {isFetching ? (
             <div className={`flex justify-center ${!authenticatedUser ? 'mt-10 sm:mt-5' : "mt-20 sm:mt-10"}`}>
               <FetchingDataLoader />

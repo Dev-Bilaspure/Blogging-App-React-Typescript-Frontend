@@ -36,10 +36,10 @@ const Navbar = () => {
                 <p className="">Contact us</p>
               </a>
               {location.pathname !== "/write" && (
-                <Link to="/write" className="sm:hidden">
+                <Link to="/write">
                   <div className="flex space-x-1">
-                    <i className="fa-regular fa-pen-to-square flex items-center justify-center"></i>
-                    <p className="">Write</p>
+                    <i className="fa-regular fa-pen-to-square flex items-center justify-center sm:text-[13px]"></i>
+                    <p className="sm:text-[13px]">Write</p>
                   </div>
                 </Link>
               )}

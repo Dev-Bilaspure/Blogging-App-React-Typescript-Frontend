@@ -14,6 +14,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "@/utils/schemas";
 import { useStore } from "@/store/useStore";
 import { debug_mode } from "@/debug-controller";
+import SEO from "@/components/primary/SEO";
 
 const Login = ({ setIsSubmittingForm, setSubmittionError }) => {
   const navigate = useNavigate();
@@ -53,6 +54,7 @@ const Login = ({ setIsSubmittingForm, setSubmittionError }) => {
 
   return (
     <div className="mt-7 flex flex-col">
+      <SEO options={{ title: "Login" }} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           id="email"

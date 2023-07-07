@@ -7,6 +7,7 @@ import UsernameEdit from "./UsernameEdit";
 import ProfilePictureEdit from "./ProfilePictureEdit";
 import BioEdit from "./BioEdit";
 import PasswordEdit from "./PasswordEdit";
+import SEO from "@/components/primary/SEO";
 
 const Settings = () => {
   const {
@@ -16,6 +17,7 @@ const Settings = () => {
   return (
     !authenticatedUser ? <Navigate to="/login" /> : 
     <div className="flex w-full justify-center pt-5 sm:px-5 pb-20">
+      <SEO options={{ title: "Settings" }} />
       <div className=" mt-10 w-1/2 overflow-x-hidden md:w-3/4 sm:mt-5 sm:w-full">
         <div className="mb-10 flex w-full space-x-4 border-b border-[#E6E6E6] pb-2 sm:space-x-2 sm:pb-1">
           <div className="mt-[7px] h-[45px] w-[45px] rounded-full bg-[#E6E6E6] text-[27px] sm:h-[33px] sm:w-[33px] sm:text-[20px]">

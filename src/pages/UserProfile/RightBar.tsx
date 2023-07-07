@@ -18,6 +18,7 @@ const RightBar = ({ user, isFetchingUser }) => {
   } = useStore();
 
   const navigate = useNavigate();
+  console.log(user);
 
   useEffect(() => {
     if (!authenticatedUser || !user) return;
@@ -59,11 +60,11 @@ const RightBar = ({ user, isFetchingUser }) => {
           <div
             className={`flex h-[90px] w-[90px] justify-center rounded-full bg-cover sm:h-[75px] sm:w-[75px]`}
             style={{
-              backgroundImage: `url(${
-                user?.profilePicture?.length > 0
-                  ? user?.profilePicture
-                  : defaultUserPic
-              })`,
+              backgroundImage: `url("${
+                user && user.profilePicture?.length > 0 ? user.profilePicture : defaultUserPic
+              }")`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           ></div>
           <p className="mt-2 font-sans text-[16px] font-medium sm:text-[15px]">{`${user?.firstName} ${user?.lastName}`}</p>

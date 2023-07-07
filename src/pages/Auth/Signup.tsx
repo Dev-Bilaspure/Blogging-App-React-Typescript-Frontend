@@ -16,6 +16,7 @@ import { signupSchema } from "@/utils/schemas";
 import { useStore } from "@/store/useStore";
 import { debug_mode } from "@/debug-controller";
 import { AxiosError } from "axios";
+import SEO from "@/components/primary/SEO";
 
 const Signup = ({ setIsSubmittingForm, setSubmittionError }) => {
   const navigate = useNavigate();
@@ -66,6 +67,7 @@ const Signup = ({ setIsSubmittingForm, setSubmittionError }) => {
 
   return (
     <div className="mt-7 flex flex-col">
+      <SEO options={{ title: "Signup" }} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <TextField
           id="firstName"
