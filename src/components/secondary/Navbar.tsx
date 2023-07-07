@@ -42,7 +42,7 @@ const Navbar = () => {
                 className="flex space-x-[6px] md:hidden sm:block"
               >
                 <i className="fa-brands fa-github mt-[3px] sm:text-[13px]"></i>
-                <p className="sm:text-[13px]">Github Repo</p>
+                <p className="sm:text-[13px]">Github</p>
               </a>
               {location.pathname !== "/write" && (
                 <Link to="/write">
