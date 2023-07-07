@@ -100,9 +100,11 @@ const UserFFs = (props) => {
                 _.capitalize(page)}
             </p>
           </div>
-          {isFetchingFFUsers ? <div className="flex justify-center mt-10">
+          {isFetchingFFUsers ? (
+            <div className="mt-10 flex justify-center">
               <FetchingDataLoader />
-          </div> : (!ffUsers ? (
+            </div>
+          ) : !ffUsers ? (
             <div className="rgb(60, 60, 60) mt-5 flex justify-center space-x-1 text-[14px] sm:text-[13px]">
               <p>{`${_.capitalize(page)} of `}</p>
               <p className="font-medium">{`${user.firstName} ${user.lastName}`}</p>
@@ -114,10 +116,10 @@ const UserFFs = (props) => {
                 return <UserFF ffUser={ffUser} setffUsers={setffUsers} />;
               })}
             </div>
-          ))}
+          )}
         </div>
         <div className="fixed right-0 top-0 h-screen w-1/3 space-y-5 border-l border-gray px-10 md:px-10 sm:static sm:inset-auto sm:h-auto sm:w-full sm:border-none sm:px-5">
-          <RightBar user={user} isFetchingUser={false}/>
+          <RightBar user={user} isFetchingUser={false} />
         </div>
       </div>
     </div>
@@ -192,15 +194,19 @@ const UserFF = ({ ffUser, setffUsers }) => {
   return (
     <div className="flex justify-between">
       <div className="flex space-x-5 sm:space-x-4 ">
-        <img
-          src={
-            ffUser.profilePicture?.length
-              ? ffUser.profilePicture
-              : defaultUserPic
-          }
-          className="h-[45px] w-[45px] cursor-pointer rounded-full object-cover sm:h-[40px] sm:w-[40px]"
-        />
-        <div className="flex flex-col space-y-1">
+        <div className="h-[47px] w-[47px] sm:w-[40px] sm:h-[40px]">
+          <Link to={`/${ffUser ? ffUser.username : ""}`}>
+            <img
+              src={
+                ffUser.profilePicture?.length > 0
+                  ? ffUser.profilePicture
+                  : defaultUserPic
+              }
+              className="h-full w-full rounded-full object-cover sm:w-[45px]"
+            />
+          </Link>
+        </div>
+        <div className="flex-1 mb-1">
           <Link to={`/${ffUser.username}`}>
             <p className=" text-[18px] font-medium sm:text-[16px]">
               {!authenticatedUser || authenticatedUser._id !== ffUser._id
@@ -209,7 +215,7 @@ const UserFF = ({ ffUser, setffUsers }) => {
             </p>
           </Link>
           <Link to={`/${ffUser.username}`}>
-            <p className="text-[13px] font-medium text-[#757575] sm:text-[12px]">
+            <p className="text-[13px] font-medium text-[#757575] line-clamp-2 sm:text-[12px]">
               {ffUser.bio}
             </p>
           </Link>

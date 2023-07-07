@@ -97,7 +97,7 @@ const Suggestion = ({ user }) => {
       className={`flex w-[300px] flex-row space-x-3 sm:w-auto sm:justify-between sm:space-x-8 sm:space-x-0`}
     >
       <div className="flex space-x-3">
-        <div className="w-[40px] sm:w-[45px] ">
+        <div className="w-[45px] h-[45px] sm:w-[40px] sm:h-[40px]">
           <Link to={`/${user ? user.username : ""}`}>
             <img
               src={
@@ -105,11 +105,11 @@ const Suggestion = ({ user }) => {
                   ? user.profilePicture
                   : defaultUserPic
               }
-              className="h-[40px] w-[40px] rounded-full object-cover sm:w-[45px]"
+              className="h-full w-full rounded-full object-cover sm:w-[45px]"
             />
           </Link>
         </div>
-        <div className="flex w-[150px] flex-col space-y-[3px] sm:w-fit">
+        <div className="flex-1 w-[150px] mb-[3px] sm:w-fit">
           <Link to={`/${user ? user.username : ""}`}>
             <p className="font-lato text-[14px]">
               {user.firstName + " " + user.lastName}
