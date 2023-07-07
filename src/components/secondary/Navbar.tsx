@@ -36,16 +36,18 @@ const Navbar = () => {
                 <p className="">Contact us</p>
               </a>
 
-              <a
-                href="https://github.com/Dev-Bilaspure/Medium-Clone-MERN-App--Maadhyam"
+              <Link
+                to="https://github.com/Dev-Bilaspure/Medium-Clone-MERN-App--Maadhyam"
                 target="_blank"
-                className="flex space-x-[6px] md:hidden sm:block"
+                rel="noopener noreferrer"
               >
-                <i className="fa-brands fa-github mt-[3px] sm:text-[13px]"></i>
-                <p className="sm:text-[13px]">Github</p>
-              </a>
+                <div className="flex space-x-1">
+                  <i className="fa-brands fa-github flex items-center justify-center sm:text-[12px]"></i>
+                  <p className="sm:text-[13px]">Github</p>
+                </div>
+              </Link>
               {location.pathname !== "/write" && (
-                <Link to="/write">
+                <Link to="/write" className="sm:hidden">
                   <div className="flex space-x-1">
                     <i className="fa-regular fa-pen-to-square flex items-center justify-center sm:text-[13px]"></i>
                     <p className="sm:text-[13px]">Write</p>
