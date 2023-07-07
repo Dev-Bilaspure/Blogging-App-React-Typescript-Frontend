@@ -239,13 +239,13 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
             <p className="mt-[2px] flex cursor-pointer flex-row items-center justify-center text-[14px] font-medium sm:text-[12px]">
               {post.authorInfo.firstName + " " + post.authorInfo.lastName}
               <span className="ml-[7px]">
-                <div className="h-[2px] w-[2.5px] bg-[#757575]"></div>
+                <div className="h-[2.5px] w-[2.5px] bg-[#757575]"></div>
               </span>
               <span className="ml-[7px] text-[14px] font-medium text-[#757575]">
                 {getTimeAgo(post.createdAt)}
               </span>
               <span className="ml-[7px]">
-                <div className="h-[2px] w-[2.5px] bg-[#757575]"></div>
+                <div className="h-[2.5px] w-[2.3px] bg-[#757575]"></div>
               </span>
               <span className="ml-[7px] text-[14px] font-medium text-[#757575]">{`${post.views} views`}</span>
             </p>
