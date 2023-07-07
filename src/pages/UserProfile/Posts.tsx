@@ -99,18 +99,18 @@ const Post = ({ post, user, setPosts }) => {
     try {
       if (isLiked) {
         setIsLiked(false);
+        setLikesCount(likesCount - 1);
         const response = await unlikeAPost(post._id);
         if (response.success) {
-          setLikesCount(likesCount - 1);
           debug_mode && console.log("unliked successfully");
         }
         debug_mode && console.log(response);
       } else {
         setIsLiked(true);
+        setLikesCount(likesCount + 1);
         const response = await likeAPost(post._id);
         if (response.success) {
           debug_mode && console.log("liked successfully");
-          setLikesCount(likesCount + 1);
         }
         debug_mode && console.log(response);
       }

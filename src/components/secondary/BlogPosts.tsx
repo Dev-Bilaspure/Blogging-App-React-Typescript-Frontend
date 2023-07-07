@@ -165,11 +165,11 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
     try {
       if (isLiked) {
         setIsLiked(false);
+        setLikesCount(likesCount - 1);
         const response = await unlikeAPost(post._id);
         if (response.success) {
           setUnlikedPostSuccess(true);
           debug_mode && console.log('post unliked successfully');
-          setLikesCount(likesCount - 1);
           if (pathname === "/me/liked" && props.onPostUnLiked) {
             props.onPostUnLiked(post._id);
           }
@@ -177,10 +177,10 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
         debug_mode && console.log(response);
       } else {
         setIsLiked(true);
+        setLikesCount(likesCount + 1);
         const response = await likeAPost(post._id);
         if (response.success) {
           setLikedPostSuccess(true);
-          setLikesCount(likesCount + 1);
           debug_mode && console.log('post liked successfully');
         }
         debug_mode && console.log(response);
