@@ -27,13 +27,22 @@ const Navbar = () => {
         >
           <div className={`flex w-full justify-between px-10 sm:px-0`}>
             <BigLogo className={""} />
-            <div className="flex flex-row items-center justify-center space-x-10 text-black sm:space-x-5 text-[15px]">
+            <div className="flex flex-row items-center justify-center space-x-10 text-[15px] text-black sm:space-x-5">
               <a
                 href="https://linkedin.com/in/dev-bilaspure"
                 target="_blank"
                 className="md:hidden"
               >
                 <p className="">Contact us</p>
+              </a>
+
+              <a
+                href="https://github.com/Dev-Bilaspure/Medium-Clone-MERN-App--Maadhyam"
+                target="_blank"
+                className="flex space-x-[6px] md:hidden"
+              >
+                <i className="fa-brands fa-github mt-[3px] sm:text-[13px]"></i>
+                <p className="sm:text-[13px]">Github Repo</p>
               </a>
               {location.pathname !== "/write" && (
                 <Link to="/write">
@@ -56,9 +65,7 @@ const Navbar = () => {
                   Get Started
                 </button>
               )}
-              {authenticatedUser && (
-                <AccountMenu />
-              )}
+              {authenticatedUser && <AccountMenu />}
             </div>
           </div>
         </Toolbar>
