@@ -39,7 +39,7 @@ const Navbar = () => {
               <a
                 href="https://github.com/Dev-Bilaspure/Medium-Clone-MERN-App--Maadhyam"
                 target="_blank"
-                className="flex space-x-[6px] md:hidden"
+                className="flex space-x-[6px] md:hidden sm:block"
               >
                 <i className="fa-brands fa-github mt-[3px] sm:text-[13px]"></i>
                 <p className="sm:text-[13px]">Github Repo</p>
