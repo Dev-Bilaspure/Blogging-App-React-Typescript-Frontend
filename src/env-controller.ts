@@ -1,1 +1,1 @@
-export const env: string = "dev";
+export const env: string = "prod";
