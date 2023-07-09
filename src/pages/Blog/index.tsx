@@ -170,7 +170,7 @@ const Blog = (props) => {
                 </Button>
               </div>
               <div className="flex text-[13px] font-medium text-[#757575]">
-                {getTimeAgo(post?.createdAt)}{" "}
+                {getTimeAgo(post?.publishDate)}{" "}
                 <div className="ml-[7px] mt-[9px] h-[2px] w-[2.5px] bg-[#757575]"></div>
                 <span className="ml-[7px]  font-medium text-[#757575]">{`${post.views} views`}</span>
               </div>
