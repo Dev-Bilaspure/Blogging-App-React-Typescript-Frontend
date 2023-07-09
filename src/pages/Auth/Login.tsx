@@ -40,7 +40,7 @@ const Login = ({ setIsSubmittingForm, setSubmittionError }) => {
       if (debug_mode) console.log(response);
 
       if(response.success) {
-        navigate("/");
+        // navigate("/");
       } else {
         setSubmittionError(response.message);
       }

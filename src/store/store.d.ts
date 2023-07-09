@@ -17,13 +17,13 @@ interface State {
       }: {
         email: string;
         password: string;
-      }) => Promise<{
+      }) => Promise<any>;
+      logoutUser: () => Promise<{ 
         success: boolean;
         message: string;
         error?: any;
         errorType?: string;
       }>;
-      logoutUser: () => void;
       signupUser: ({
         firstName,
         lastName,
