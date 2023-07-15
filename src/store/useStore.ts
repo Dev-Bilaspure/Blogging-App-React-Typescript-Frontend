@@ -26,6 +26,10 @@ export const useStore = create<State, [["zustand/immer", never]]>(
               set((state) => {
                 state.data.authenticatedUser = response.data.user;
               });
+            } else {
+              set((state) => {
+                state.data.authenticatedUser = null;
+              });
             }
             return response.data;
           } catch (error) {
@@ -91,6 +95,22 @@ export const useStore = create<State, [["zustand/immer", never]]>(
             await get().actions.auth.initializeUser();
           }
           return response.data;
+        },
+        checkUsernameAvailability: async (username) => {
+          try {
+            const response = await axios.get(
+              `${ORIGIN}/api/auth/usernameavailability/${username}`
+            );
+            return response.data;
+          } catch (error) {
+            debug_mode && console.log(error);
+            return {
+              success: false,
+              message: "Axios error",
+              error,
+              errorType: AXIOS_ERROR,
+            };
+          }
         },
       },
       user: {

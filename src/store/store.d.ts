@@ -18,7 +18,7 @@ interface State {
         email: string;
         password: string;
       }) => Promise<any>;
-      logoutUser: () => Promise<{ 
+      logoutUser: () => Promise<{
         success: boolean;
         message: string;
         error?: any;
@@ -39,6 +39,14 @@ interface State {
         message: string;
         error?: any;
         errorType?: string;
+      }>;
+      checkUsernameAvailability: (username: string) => Promise<{
+        success: boolean;
+        message: string;
+        error?: any;
+        errorType?: string;
+        isAvailable?: boolean;
+        username?: string;
       }>;
     };
 
@@ -143,17 +151,17 @@ interface State {
         posts?: any[];
         error?: any;
         errorType?: string;
-      }>
+      }>;
       updatePost: ({
         postId,
         isPublished,
         isCommentsEnabled,
-        tags
+        tags,
       }: {
-        postId: string,
-        isPublished: boolean,
-        isCommentsEnabled: boolean,
-        tags: string[]
+        postId: string;
+        isPublished: boolean;
+        isCommentsEnabled: boolean;
+        tags: string[];
       }) => Promise<{
         success: boolean;
         message: string;
@@ -161,27 +169,21 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
-      publishPost: (
-        postId: string
-      ) => Promise<{
+      publishPost: (postId: string) => Promise<{
         success: boolean;
         message: string;
         post?: any;
         error?: any;
         errorType?: string;
       }>;
-      unPublishPost: (
-        postId: string
-      ) => Promise<{
+      unPublishPost: (postId: string) => Promise<{
         success: boolean;
         message: string;
         post?: any;
         error?: any;
         errorType?: string;
       }>;
-      deletePost: (
-        postId: string
-      ) => Promise<{
+      deletePost: (postId: string) => Promise<{
         success: boolean;
         message: string;
         post?: any;
@@ -195,9 +197,7 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
-      getPostsByUserId: (
-        userId: string
-      ) => Promise<{
+      getPostsByUserId: (userId: string) => Promise<{
         success: boolean;
         message: string;
         posts?: any[];
@@ -211,27 +211,21 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
-      getPostById: (
-        postId: string
-      ) => Promise<{
+      getPostById: (postId: string) => Promise<{
         success: boolean;
         message: string;
         post?: any;
         error?: any;
         errorType?: string;
       }>;
-      likeAPost: (
-        postId: string
-      ) => Promise<{
+      likeAPost: (postId: string) => Promise<{
         success: boolean;
         message: string;
         post?: any;
         error?: any;
         errorType?: string;
       }>;
-      unlikeAPost: (
-        postId: string
-      ) => Promise<{
+      unlikeAPost: (postId: string) => Promise<{
         success: boolean;
         message: string;
         post?: any;
@@ -283,9 +277,7 @@ interface State {
     };
 
     comment: {
-      getPostComments: (
-        postId: string
-      ) => Promise<{
+      getPostComments: (postId: string) => Promise<{
         success: boolean;
         message: string;
         comments?: any[];
@@ -305,27 +297,21 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
-      likeAComment: (
-        commentId: string
-      ) => Promise<{
+      likeAComment: (commentId: string) => Promise<{
         success: boolean;
         message: string;
         comment?: any;
         error?: any;
         errorType?: string;
       }>;
-      unlikeAComment: (
-        commentId: string
-      ) => Promise<{
+      unlikeAComment: (commentId: string) => Promise<{
         success: boolean;
         message: string;
         comment?: any;
         error?: any;
         errorType?: string;
       }>;
-      deleteComment: (
-        commentId: string
-      ) => Promise<{
+      deleteComment: (commentId: string) => Promise<{
         success: boolean;
         message: string;
         comment?: any;
