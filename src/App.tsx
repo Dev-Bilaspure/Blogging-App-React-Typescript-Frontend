@@ -1,5 +1,6 @@
 import {
   BrowserRouter,
+  HashRouter,
   Navigate,
   Route,
   Routes,
@@ -119,10 +120,10 @@ function App() {
   return (
     <div className={!isFetchingUser ? "mt-[65px] sm:mt-[57px]" : ""}>
       <HelmetProvider>
-        <BrowserRouter>
+        <HashRouter>
           <Navbar />
           {isFetchingUser ? <SplashScreen /> : <RoutesList />}
-        </BrowserRouter>
+        </HashRouter>
       </HelmetProvider>
     </div>
   );
