@@ -27,7 +27,7 @@ const Comments = ({
   } = useStore();
 
   useEffect(() => {
-    if (!authenticatedUser) return;
+    // if (!authenticatedUser) return;
     (async () => {
       const response = await getPostComments(post._id);
       if (response.success) {
