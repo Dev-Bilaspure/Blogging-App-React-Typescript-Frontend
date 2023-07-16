@@ -35,7 +35,7 @@ const Home = (props) => {
     if (response.success && Array.isArray(response.posts)) {
       setPosts([...posts, ...response.posts]);
       response.totalPosts && setTotalPosts(response.totalPosts);
-      setPage(page+1);
+      setPage(page + 1);
     }
     setIsFetching(false);
   };
@@ -50,7 +50,7 @@ const Home = (props) => {
       <HomeBanner className={`${authenticatedUser ? "hidden" : "block"}`} />
       <div className={"mb-40 flex w-full  flex-row sm:flex-col sm:space-y-10 "}>
         <div
-          className={`w-2/3 px-[100px] pt-[0px] md:px-[40px] sm:w-full sm:px-5 sm:pt-0 ${
+          className={`w-2/3 border-r border-gray sm:border-none px-[100px] pt-[0px] md:px-[40px] sm:w-full sm:px-5 sm:pt-0 ${
             !authenticatedUser ? "mt-5" : ""
           }`}
         >
@@ -90,7 +90,7 @@ const Home = (props) => {
             }
           >
             {posts.length === 0 && isFetching ? (
-              <div className="flex justify-center overflow-hidden mt-10">
+              <div className="mt-10 flex justify-center overflow-hidden">
                 <CircularProgress color="inherit" size={30} />
               </div>
             ) : (
@@ -104,7 +104,7 @@ const Home = (props) => {
             )}
           </InfiniteScroll>
         </div>
-        <div className="h-screen  w-1/3 space-y-5 border-l border-gray px-10 pl-10 sm:w-full sm:border-none sm:px-5">
+        <div className="h-screen  w-1/3 space-y-5 px-10 pl-10 sm:w-full sm:border-none sm:px-5">
           <div className="mt-10 flex flex-col pt-[20px]">
             <WritingTips />
             <Suggestions />
