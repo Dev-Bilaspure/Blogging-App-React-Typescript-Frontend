@@ -15,6 +15,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const PAGE_SIZE = 5;
 
+
 const Home = (props) => {
   const [posts, setPosts] = useState<any>([]);
   const [isFetching, setIsFetching] = useState(false);
