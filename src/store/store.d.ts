@@ -190,7 +190,13 @@ interface State {
         error?: any;
         errorType?: string;
       }>;
-      getAllPosts: () => Promise<{
+      getAllPosts: ({
+        pageno,
+        pagesize,
+      }: {
+        pageno: number;
+        pagesize: number;
+      }) => Promise<{
         success: boolean;
         message: string;
         posts?: any[];

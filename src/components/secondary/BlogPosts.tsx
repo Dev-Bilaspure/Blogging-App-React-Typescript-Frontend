@@ -169,7 +169,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
         const response = await unlikeAPost(post._id);
         if (response.success) {
           setUnlikedPostSuccess(true);
-          debug_mode && console.log('post unliked successfully');
+          debug_mode && console.log("post unliked successfully");
           if (pathname === "/me/liked" && props.onPostUnLiked) {
             props.onPostUnLiked(post._id);
           }
@@ -181,7 +181,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
         const response = await likeAPost(post._id);
         if (response.success) {
           setLikedPostSuccess(true);
-          debug_mode && console.log('post liked successfully');
+          debug_mode && console.log("post liked successfully");
         }
         debug_mode && console.log(response);
       }
@@ -200,7 +200,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
         setIsBookmarked(false);
         const response = await unbookmarkAPost(post._id);
         if (response.success) {
-          debug_mode && console.log('unbookmarked successfully')
+          debug_mode && console.log("unbookmarked successfully");
           setUnbookmarkedPostSuccess(true);
           if (pathname === "/me/bookmarks" && props.onPostUnBookmarked) {
             props.onPostUnBookmarked(post._id);
@@ -211,7 +211,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
         setIsBookmarked(true);
         const response = await bookmarkAPost(post._id);
         if (response.success) {
-          debug_mode && console.log('bookmarked successfully')
+          debug_mode && console.log("bookmarked successfully");
           setBookmarkedPostSuccess(true);
         }
         debug_mode && console.log(response);
@@ -241,7 +241,9 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
           </Link>
           <Link to={`/${postsAuthor ? postsAuthor.username : ""}`}>
             <p className="mt-[2px] flex cursor-pointer flex-row items-center justify-center text-[14px] font-medium sm:text-[12px]">
-              {postsAuthor ? postsAuthor.firstName + " " + postsAuthor.lastName : ""}
+              {postsAuthor
+                ? postsAuthor.firstName + " " + postsAuthor.lastName
+                : ""}
               <span className="ml-[7px]">
                 <div className="h-[2.5px] w-[2.5px] bg-[#757575]"></div>
               </span>

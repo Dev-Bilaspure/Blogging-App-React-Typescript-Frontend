@@ -491,9 +491,11 @@ export const useStore = create<State, [["zustand/immer", never]]>(
             };
           }
         },
-        getAllPosts: async () => {
+        getAllPosts: async ({ pageno, pagesize }) => {
           try {
-            const response = await axios.get(`${ORIGIN}/api/posts`);
+            const response = await axios.get(
+              `${ORIGIN}/api/posts?pageno=${pageno}&pagesize=${pagesize}`
+            );
             if (response.data.success) {
               const { success, message, posts } = response.data;
               return { success, message, posts };
