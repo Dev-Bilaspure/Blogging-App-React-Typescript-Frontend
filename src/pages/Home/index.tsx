@@ -15,7 +15,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 const PAGE_SIZE = 5;
 
-
 const Home = (props) => {
   const [posts, setPosts] = useState<any>([]);
   const [isFetching, setIsFetching] = useState(false);
@@ -30,12 +29,14 @@ const Home = (props) => {
   } = useStore();
 
   const fetchAllPost = async () => {
+    setIsFetching(true);
     setPage(Math.ceil(posts.length / PAGE_SIZE) + 1);
     const response = await getAllPosts({ pageno: page, pagesize: PAGE_SIZE });
     if (response.success && Array.isArray(response.posts)) {
       setPosts([...posts, ...response.posts]);
       response.totalPosts && setTotalPosts(response.totalPosts);
     }
+    setIsFetching(false);
   };
 
   useEffect(() => {
@@ -87,19 +88,24 @@ const Home = (props) => {
               )
             }
           >
-            <BlogPosts
-              posts={posts}
-              isFetching={isFetching}
-              setPosts={setPosts}
-              className="mt-10"
-              noPostsMessage="No posts yet"
-            />
+            {posts.length === 0 && isFetching ? (
+              <div className="flex justify-center overflow-hidden">
+                <CircularProgress color="inherit" size={30} />
+              </div>
+            ) : (
+              <BlogPosts
+                posts={posts}
+                isFetching={isFetching}
+                setPosts={setPosts}
+                className="mt-10"
+                noPostsMessage="No posts yet"
+              />
+            )}
           </InfiniteScroll>
         </div>
         <div className="h-screen  w-1/3 space-y-5 border-l border-gray px-10 pl-10 sm:w-full sm:border-none sm:px-5">
           <div className="mt-10 flex flex-col pt-[20px]">
             <WritingTips />
-            {page}
             <Suggestions />
             <TagsTabs />
             <div className="mt-5 pr-20 sm:pr-0">
