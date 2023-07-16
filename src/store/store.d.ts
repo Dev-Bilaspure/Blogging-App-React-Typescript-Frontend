@@ -202,6 +202,7 @@ interface State {
         posts?: any[];
         error?: any;
         errorType?: string;
+        totalPosts?: number;
       }>;
       getPostsByUserId: (userId: string) => Promise<{
         success: boolean;

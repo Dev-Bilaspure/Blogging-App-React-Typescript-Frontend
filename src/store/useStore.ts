@@ -497,8 +497,8 @@ export const useStore = create<State, [["zustand/immer", never]]>(
               `${ORIGIN}/api/posts?pageno=${pageno}&pagesize=${pagesize}`
             );
             if (response.data.success) {
-              const { success, message, posts } = response.data;
-              return { success, message, posts };
+              const { success, message, posts, totalPosts } = response.data;
+              return { success, message, posts, totalPosts };
             }
             if (debug_mode) console.log({ res: response });
 
