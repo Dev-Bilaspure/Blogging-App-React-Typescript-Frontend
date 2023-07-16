@@ -266,7 +266,7 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
             <div className="flex h-full flex-col space-y-3 rounded-lg">
               <div className="flex h-full flex-col space-y-2 rounded-lg">
                 <Link to={`/blog/${post._id}`}>
-                  <p className="cursor-pointer font-outfit text-[21px] font-bold line-clamp-2 sm:text-[16px]  sm:line-clamp-3">
+                  <p className="cursor-pointer font-outfit text-[21px] font-bold line-clamp-2 sm:text-[16px]">
                     {post.title}
                   </p>
                 </Link>
