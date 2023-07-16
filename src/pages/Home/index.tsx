@@ -30,11 +30,12 @@ const Home = (props) => {
 
   const fetchAllPost = async () => {
     setIsFetching(true);
-    setPage(Math.ceil(posts.length / PAGE_SIZE) + 1);
+    // setPage(Math.ceil(posts.length / PAGE_SIZE) + 1);
     const response = await getAllPosts({ pageno: page, pagesize: PAGE_SIZE });
     if (response.success && Array.isArray(response.posts)) {
       setPosts([...posts, ...response.posts]);
       response.totalPosts && setTotalPosts(response.totalPosts);
+      setPage(page+1);
     }
     setIsFetching(false);
   };
@@ -89,7 +90,7 @@ const Home = (props) => {
             }
           >
             {posts.length === 0 && isFetching ? (
-              <div className="flex justify-center overflow-hidden">
+              <div className="flex justify-center overflow-hidden mt-10">
                 <CircularProgress color="inherit" size={30} />
               </div>
             ) : (
