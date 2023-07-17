@@ -50,7 +50,7 @@ const Home = (props) => {
       <HomeBanner className={`${authenticatedUser ? "hidden" : "block"}`} />
       <div className={"mb-40 flex w-full  flex-row sm:flex-col sm:space-y-10 "}>
         <div
-          className={`w-2/3 border-r border-gray sm:border-none px-[100px] pt-[0px] md:px-[40px] sm:w-full sm:px-5 sm:pt-0 ${
+          className={`w-2/3 border-r border-gray px-[100px] pt-[0px] md:px-[40px] sm:w-full sm:border-none sm:px-5 sm:pt-0 ${
             !authenticatedUser ? "mt-5" : ""
           }`}
         >
@@ -91,7 +91,7 @@ const Home = (props) => {
           >
             {posts.length === 0 && isFetching ? (
               <div className="mt-10 flex justify-center overflow-hidden">
-                <CircularProgress color="inherit" size={30} />
+                <FetchingDataLoader />
               </div>
             ) : (
               <BlogPosts
