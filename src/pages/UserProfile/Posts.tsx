@@ -85,9 +85,10 @@ const Post = ({ post, user, setPosts }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!authenticatedUser) return;
-    setIsLiked(post.likes?.includes(authenticatedUser._id));
-    setIsBookmarked(user.bookmarks?.includes(post._id));
+    if (authenticatedUser) {
+      setIsLiked(post.likes?.includes(authenticatedUser._id));
+      setIsBookmarked(user.bookmarks?.includes(post._id));
+    }
     setLikesCount(post.likes?.length);
   }, [post, authenticatedUser]);
 

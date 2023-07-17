@@ -153,8 +153,8 @@ const BlogPost = ({ post, setPosts, tagValue, ...props }) => {
     if (authenticatedUser) {
       setIsLiked(_.includes(post.likes, authenticatedUser._id));
       setIsBookmarked(_.includes(authenticatedUser.bookmarks, post._id));
-      setLikesCount(post.likes?.length);
     }
+    setLikesCount(post.likes?.length);
   }, [authenticatedUser]);
 
   const handleLike = async () => {
