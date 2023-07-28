@@ -79,7 +79,7 @@ export const tagsArray = [
   "writing",
 ];
 
-export const SERVER_ORIGIN = env === 'dev' ? "http://localhost:8000" : "https://maadhyam-app-server-new.onrender.com";
+export const SERVER_ORIGIN = env === 'dev' ? "http://localhost:8000" : "https://maadyam-app-server.onrender.com";
 
 export const defaultUserPic =
   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
