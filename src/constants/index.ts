@@ -1,5 +1,5 @@
-import { env } from '@/env-controller';
-import sampleImage from '../assets/images/sample-image.jpeg'
+import { EEnv, env } from "@/env-controller";
+import sampleImage from "../assets/images/sample-image.jpeg";
 
 export const tagsArray = [
   // News and Politics
@@ -79,11 +79,17 @@ export const tagsArray = [
   "writing",
 ];
 
-export const SERVER_ORIGIN = env === 'dev' ? "http://localhost:8000" : "https://maadyam-app-server.onrender.com";
+const server1 = "https://maadhyam-app-server.onrender.com";
+const server2 = "https://maadhyam-app-server-new.onrender.com";
+
+const servers = [server1, server2];
+
+export const SERVER_ORIGIN =
+  env === EEnv.DEV ? "http://localhost:8000" : servers[1];
 
 export const defaultUserPic =
   "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png";
 
 export const bannerImages = [
-  'https://firebasestorage.googleapis.com/v0/b/maadhyam-blogging-app.appspot.com/o/otherUtils%2FbannerImg.jpg?alt=media&token=3d093de7-19dc-4866-bbc0-cd6dab5d512f',
-]
+  "https://firebasestorage.googleapis.com/v0/b/maadhyam-blogging-app.appspot.com/o/otherUtils%2FbannerImg.jpg?alt=media&token=3d093de7-19dc-4866-bbc0-cd6dab5d512f",
+];
